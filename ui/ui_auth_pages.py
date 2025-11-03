@@ -7,14 +7,30 @@ def create_login_ui(app_instance):
     """Membuat UI login yang stabil."""
     app_instance.clear_frame()
     
-    frame = ttk.Frame(app_instance.root, padding=20)
-    frame.pack(expand=True)
+    # Main container that fills the window
+    container = ttk.Frame(app_instance.root, style="ContentWrapper.TFrame")
+    container.pack(expand=True, fill='both')
     
+    # Configure grid weights for both rows and columns to center the content
+    container.grid_rowconfigure(0, weight=1)
+    container.grid_rowconfigure(2, weight=1)
+    container.grid_columnconfigure(0, weight=1)
+    container.grid_columnconfigure(2, weight=1)
+    
+    # Modern frame with shadow effect
+    frame = ttk.Frame(container, style="CryptoPage.TFrame", padding=40)
+    frame.grid(row=1, column=1, sticky='nsew')
+    
+    # Always show the store name
+    ttk.Label(frame, text="Toko Keren", style="PageTitle.TLabel").pack(pady=20)
+    
+    # Show logo if available
     try:
-        logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"])
-        logo_label.pack(pady=(0, 10))
-    except KeyError:
-        ttk.Label(frame, text="Toko Keren", font=("Arial", 24, "bold")).pack(pady=20)
+        if app_instance.image_cache["logo"]:
+            logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"], style="Crypto.TLabel")
+            logo_label.pack(pady=(0, 20))
+    except (KeyError, AttributeError):
+        pass
     
     ttk.Label(frame, text="Selamat Datang! Silakan login.", font=("Arial", 14)).pack(pady=20)
     
@@ -38,14 +54,25 @@ def create_register_ui(app_instance):
     """Membuat UI register yang stabil."""
     app_instance.clear_frame()
     
-    frame = ttk.Frame(app_instance.root, padding=20)
-    frame.pack(expand=True)
+    # Main container that fills the window
+    container = ttk.Frame(app_instance.root, style="ContentWrapper.TFrame")
+    container.pack(expand=True, fill='both')
+    
+    # Configure grid weights for both rows and columns to center the content
+    container.grid_rowconfigure(0, weight=1)
+    container.grid_rowconfigure(2, weight=1)
+    container.grid_columnconfigure(0, weight=1)
+    container.grid_columnconfigure(2, weight=1)
+    
+    # Modern frame with shadow effect
+    frame = ttk.Frame(container, style="CryptoPage.TFrame", padding=40)
+    frame.grid(row=1, column=1, sticky='nsew')
     
     try:
-        logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"])
-        logo_label.pack(pady=(0, 10))
+        logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"], style="Crypto.TLabel")
+        logo_label.pack(pady=(0, 20))
     except KeyError:
-        pass
+        ttk.Label(frame, text="Toko Keren", style="PageTitle.TLabel").pack(pady=20)
     
     ttk.Label(frame, text="Buat Akun Baru", font=("Arial", 16, "bold")).pack(pady=10)
     

@@ -50,6 +50,8 @@ class DecoyEStoreApp:
         self.COLOR_PRIMARY = COLOR_PRIMARY
         self.COLOR_SECONDARY = COLOR_SECONDARY
         self.COLOR_TEXT = COLOR_TEXT 
+        self.COLOR_HEADER = COLOR_HEADER
+        self.COLOR_PRODUCT_BG = COLOR_PRODUCT_BG
         
         self.is_logged_in = False
         self.current_user = None
@@ -81,24 +83,58 @@ class DecoyEStoreApp:
         style.configure("TFrame", background=COLOR_SECONDARY)
         style.configure("Header.TFrame", background=COLOR_HEADER, borderwidth=1, relief="solid")
         
+        # Modern product card styles
         style.configure("Product.TFrame", 
                         background=COLOR_PRODUCT_BG, 
                         relief="solid", 
-                        borderwidth=1,
-                        bordercolor="#EAEAEA")
+                        borderwidth=1)
                         
-        style.configure("CryptoPage.TFrame", background=COLOR_PRODUCT_BG, relief="solid", borderwidth=1)
-        style.configure("Splash.TFrame", background=COLOR_SECONDARY)
+        style.configure("Shadow.TFrame",
+                        background=COLOR_SECONDARY)
+                        
+        # Modern style for all pages
+        style.configure("CryptoPage.TFrame", 
+                    background=COLOR_PRODUCT_BG,
+                    relief="solid", 
+                    borderwidth=1,
+                    padding=20)
+        
+        # Add subtle shadow effect
+        style.configure("ModernFrame.TFrame",
+                    background=COLOR_PRODUCT_BG,
+                    relief="solid",
+                    borderwidth=1)
+
+        # Modern splash screen styles with transparency support
+        style.configure("Splash.TFrame", 
+                    background=COLOR_PRODUCT_BG)
+        style.configure("Splash.TLabel", 
+                    background=COLOR_PRODUCT_BG,
+                    foreground=COLOR_TEXT,
+                    font=("Arial", 28, "bold"))
+        
+        # Update CryptoPage frame for splash
+        style.configure("CryptoPage.TFrame",
+                    background=COLOR_PRODUCT_BG,
+                    relief="solid",
+                    borderwidth=1,
+                    padding=20)
+
+        # Content wrapper style for centering
+        style.configure("ContentWrapper.TFrame", background=COLOR_SECONDARY)
         
         style.configure("TLabel", background=COLOR_SECONDARY, foreground=COLOR_TEXT, font=("Arial", 11))
         style.configure("Header.TLabel", background=COLOR_HEADER, foreground=COLOR_TEXT)
         style.configure("Product.TLabel", background=COLOR_PRODUCT_BG, foreground=COLOR_TEXT)
-        style.configure("ProductTitle.TLabel", background=COLOR_PRODUCT_BG, foreground=COLOR_TEXT, font=("Arial", 14, "bold"))
+        style.configure("ProductTitle.TLabel", 
+                        background=COLOR_PRODUCT_BG, 
+                        foreground=COLOR_TEXT, 
+                        font=("Arial", 16, "bold"))
         
         style.configure("ProductPrice.TLabel", 
                         background=COLOR_PRODUCT_BG, 
-                        foreground=COLOR_TEXT,
-                        font=("Arial", 12, "bold"))
+                        foreground=COLOR_PRIMARY,
+                        font=("Arial", 14, "bold"))
                         
         style.configure("Error.TLabel", background=COLOR_SECONDARY, foreground=COLOR_ERROR, font=("Arial", 10, "italic"))
         style.configure("Splash.TLabel", background=COLOR_SECONDARY, foreground=COLOR_TEXT, font=("Arial", 28, "bold"))
@@ -142,8 +178,24 @@ class DecoyEStoreApp:
         style.configure("TLabelFrame", background=COLOR_SECONDARY, font=("Arial", 11))
         style.configure("TLabelFrame.Label", background=COLOR_SECONDARY, foreground=COLOR_TEXT, font=("Arial", 12, "bold"))
         
-        style.configure("Crypto.TLabelFrame", background=COLOR_PRODUCT_BG)
-        style.configure("Crypto.TLabelFrame.Label", background=COLOR_PRODUCT_BG, foreground=COLOR_TEXT, font=("Arial", 12, "bold"))
+        # --- Modern LabelFrame Styles ---
+        style.configure("TLabelframe", 
+                        background=COLOR_PRODUCT_BG)
+        style.configure("TLabelframe.Label", 
+                        background=COLOR_PRODUCT_BG,
+                        foreground=COLOR_TEXT,
+                        font=("Arial", 12, "bold"))
+                        
+        style.configure("Crypto.TLabelframe", 
+                        background=COLOR_PRODUCT_BG,
+                        relief="solid",
+                        borderwidth=1)
+        style.configure("Crypto.TLabelframe.Label", 
+                        background=COLOR_PRODUCT_BG,
+                        foreground=COLOR_TEXT,
+                        font=("Arial", 14, "bold"),
+                        padding=(10, 5))
+        # --- -------------------------------------------- ---
 
         style.configure("Nav.TButton", 
                         font=("Arial", 11, "bold"), 
@@ -170,18 +222,28 @@ class DecoyEStoreApp:
     # --- Fungsi Animasi & DB ---
     def create_splash_screen(self):
         self.clear_frame()
-        self.splash_frame = ttk.Frame(self.root, style="Splash.TFrame")
-        self.splash_frame.pack(expand=True)
+        
+        # Create simple splash frame
+        splash_frame = ttk.Frame(self.root)
+        splash_frame.pack(expand=True)
+        
         if self.image_cache["logo"]:
-            logo_label = ttk.Label(self.splash_frame, image=self.image_cache["logo"], style="Splash.TLabel")
-            logo_label.pack(pady=(0, 10))
+            logo_label = ttk.Label(splash_frame, image=self.image_cache["logo"])
+            logo_label.pack(pady=20)
         else:
-            ttk.Label(self.splash_frame, text="Toko Keren", style="Splash.TLabel").pack(pady=20)
-        ttk.Label(self.splash_frame, text="CryptoVault v1.0", font=("Arial", 14, "italic")).pack(pady=10)
+            ttk.Label(splash_frame, text="Toko Keren", font=("Arial", 28, "bold")).pack(pady=20)
+            
+        # Version text
+        ttk.Label(splash_frame, text="CryptoVault", font=("Arial", 16, "bold")).pack()
+        ttk.Label(splash_frame, text="v1.0", font=("Arial", 14)).pack(pady=10)
+    
+    def fade_out_splash(self):
+        self.clear_frame()
+        self.create_login_ui()
     
     def on_splash_faded_out(self):
-        if hasattr(self, 'splash_frame') and self.splash_frame: self.splash_frame.destroy()
-        self.create_login_ui()
+        # Show splash for 1.5 seconds then switch to login
+        self.root.after(1500, self.fade_out_splash)
     
     def load_user_db(self):
         if not os.path.exists(USER_DB_FILE): return {}
@@ -341,49 +403,34 @@ class DecoyEStoreApp:
         
         if result_ciphertext:
             reviews_db = self.load_reviews_db()
-            
-            # --- [MODIFIKASI] Logika diubah menjadi .append() ---
-            # 1. Ambil list yang ada, atau buat list baru jika belum ada
             user_reviews_list = reviews_db.get(self.current_user, [])
-            # 2. Tambahkan ulasan baru ke list
             user_reviews_list.append(result_ciphertext)
-            # 3. Simpan list yang sudah diperbarui kembali ke db
             reviews_db[self.current_user] = user_reviews_list
-            # --- -------------------------------------------- ---
-            
             self.save_reviews_db(reviews_db)
-            
             self.plaintext_text.delete("1.0", END)
             messagebox.showinfo("Sukses", "Ulasan berhasil dikirim (disimpan dengan aman)!")
 
-    # --- [MODIFIKASI] Logika dirombak untuk membaca list ---
     def do_view_review(self):
         hill_key = self.view_hill_key_entry.get()
         blowfish_key = self.view_blowfish_key_entry.get()
         if not (hill_key and blowfish_key): messagebox.showwarning("Input Kurang", "Kode Verifikasi dan Password harus diisi!"); return
         
         reviews_db = self.load_reviews_db()
-        
-        # 1. Ambil DAFTAR ulasan, atau list kosong
         user_reviews_list = reviews_db.get(self.current_user, [])
         
         if not user_reviews_list:
             messagebox.showerror("Gagal", "Tidak ada ulasan tersimpan untuk pengguna ini.")
             return
 
-        # 2. Tampilkan SEMUA ulasan terenkripsi
         self.view_ciphertext_text.config(state='normal')
         self.view_ciphertext_text.delete("1.0", END)
-        # Gabungkan semua ciphertext dengan 2 baris baru sebagai pemisah
         all_ciphertext = "\n\n".join(user_reviews_list)
         self.view_ciphertext_text.insert("1.0", all_ciphertext)
         self.view_ciphertext_text.config(state='disabled')
 
-        # 3. Validasi kunci Hill
         try: create_key_matrix(hill_key)
         except ValueError as e: messagebox.showerror("Kode Verifikasi Error", f"Kode Verifikasi tidak valid: {e}"); return
         
-        # 4. Coba dekripsi SETIAP ulasan dalam list
         all_plaintext = []
         for i, ciphertext in enumerate(user_reviews_list):
             result_plaintext = crypto_super_encrypt.super_decrypt(ciphertext, hill_key, blowfish_key)
@@ -393,10 +440,8 @@ class DecoyEStoreApp:
             else:
                 all_plaintext.append(f"--- Ulasan #{i+1} ---\n[DEKRIPSI GAGAL. Cek kunci.]")
         
-        # 5. Tampilkan SEMUA hasil dekripsi
         self.view_plaintext_text.config(state='normal')
         self.view_plaintext_text.delete("1.0", END)
-        # Gabungkan semua plaintext dengan 2 baris baru
         self.view_plaintext_text.insert("1.0", "\n\n".join(all_plaintext))
         self.view_plaintext_text.config(state='disabled')
         
@@ -404,7 +449,6 @@ class DecoyEStoreApp:
              messagebox.showwarning("Selesai", f"Berhasil memuat {len(user_reviews_list)} ulasan. Beberapa ulasan gagal didekripsi (kunci salah).")
         else:
             messagebox.showinfo("Sukses", f"Berhasil memuat dan mendekripsi {len(user_reviews_list)} ulasan!")
-    # --- Akhir Modifikasi ---
 
     def select_cover_image(self):
         path = filedialog.askopenfilename(title="Pilih Gambar Asli", filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp")])
