@@ -1,0 +1,14 @@
+{
+    "malas": {
+        "salt": "qBl+4lnooo7aEF7gvpCyCA==",
+        "hash": "TZxZ/mqTbGyH8xYVJrw9YZKzNwhFJbD7ouEOmudnbcI="
+    },
+    "waduh": {
+        "salt": "B/Gmi9e4zuyy7kZFnTWwow==",
+        "hash": "lJI3+EmRiZIcoksqhSstB0kiH1+nJQnIYn0YdNYhqn4="
+    },
+    "wow": {
+        "salt": "5wfxQ1HrZ9CYYmwb79S/xg==",
+        "hash": "FHrIQfGWJrmADzuUH/bOTDy4vhhKmE4eByj0LhKyZ+Y="
+    }
+}

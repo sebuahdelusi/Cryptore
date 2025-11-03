@@ -1,0 +1,73 @@
+# Simpan sebagai: ui/ui_auth_pages.py
+
+import tkinter as tk
+from tkinter import ttk
+
+def create_login_ui(app_instance):
+    """Membuat UI login yang stabil."""
+    app_instance.clear_frame()
+    
+    frame = ttk.Frame(app_instance.root, padding=20)
+    frame.pack(expand=True)
+    
+    try:
+        logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"])
+        logo_label.pack(pady=(0, 10))
+    except KeyError:
+        ttk.Label(frame, text="Toko Keren", font=("Arial", 24, "bold")).pack(pady=20)
+    
+    ttk.Label(frame, text="Selamat Datang! Silakan login.", font=("Arial", 14)).pack(pady=20)
+    
+    form_frame = ttk.Frame(frame)
+    form_frame.pack(pady=10)
+
+    # --- Ini adalah UI yang 100% stabil ---
+    ttk.Label(form_frame, text="Username", font=("Arial", 11, "bold")).pack(anchor='w', padx=5)
+    app_instance.login_username_entry = ttk.Entry(form_frame, width=40, font=("Arial", 12))
+    app_instance.login_username_entry.pack(fill='x', padx=5, pady=(0, 10), ipady=5)
+
+    ttk.Label(form_frame, text="Password", font=("Arial", 11, "bold")).pack(anchor='w', padx=5)
+    app_instance.login_password_entry = ttk.Entry(form_frame, show='*', width=40, font=("Arial", 12))
+    app_instance.login_password_entry.pack(fill='x', padx=5, pady=(0, 15), ipady=5)
+    # --- Akhir UI Stabil ---
+
+    ttk.Button(form_frame, text="Login", command=app_instance.on_login_click, style="Accent.TButton").pack(pady=20, fill='x', padx=5, ipady=5)
+    ttk.Button(form_frame, text="Belum punya akun? Register di sini", command=app_instance.create_register_ui, style="Link.TButton").pack(pady=15)
+
+def create_register_ui(app_instance):
+    """Membuat UI register yang stabil."""
+    app_instance.clear_frame()
+    
+    frame = ttk.Frame(app_instance.root, padding=20)
+    frame.pack(expand=True)
+    
+    try:
+        logo_label = ttk.Label(frame, image=app_instance.image_cache["logo"])
+        logo_label.pack(pady=(0, 10))
+    except KeyError:
+        pass
+    
+    ttk.Label(frame, text="Buat Akun Baru", font=("Arial", 16, "bold")).pack(pady=10)
+    
+    form_frame = ttk.Frame(frame)
+    form_frame.pack(pady=10)
+    
+    # --- Ini adalah UI yang 100% stabil ---
+    ttk.Label(form_frame, text="Username", font=("Arial", 11, "bold")).pack(anchor='w', padx=5)
+    app_instance.reg_username_entry = ttk.Entry(form_frame, width=40, font=("Arial", 12))
+    app_instance.reg_username_entry.pack(fill='x', padx=5, pady=(0, 10), ipady=5)
+
+    ttk.Label(form_frame, text="Password", font=("Arial", 11, "bold")).pack(anchor='w', padx=5)
+    app_instance.reg_password_entry = ttk.Entry(form_frame, show='*', width=40, font=("Arial", 12))
+    app_instance.reg_password_entry.pack(fill='x', padx=5, pady=(0, 10), ipady=5)
+
+    ttk.Label(form_frame, text="Konfirmasi Password", font=("Arial", 11, "bold")).pack(anchor='w', padx=5)
+    app_instance.reg_confirm_entry = ttk.Entry(form_frame, show='*', width=40, font=("Arial", 12))
+    app_instance.reg_confirm_entry.pack(fill='x', padx=5, pady=(0, 15), ipady=5)
+    # --- Akhir UI Stabil ---
+    
+    app_instance.reg_error_label = ttk.Label(form_frame, text="", style="Error.TLabel")
+    app_instance.reg_error_label.pack(pady=5)
+    
+    ttk.Button(form_frame, text="Buat Akun", command=app_instance.on_register_click, style="Accent.TButton").pack(pady=10, fill='x', padx=5, ipady=5)
+    ttk.Button(form_frame, text="Sudah punya akun? Login", command=app_instance.create_login_ui, style="Link.TButton").pack(pady=15)
