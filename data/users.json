@@ -10,5 +10,9 @@
     "wow": {
         "salt": "5wfxQ1HrZ9CYYmwb79S/xg==",
         "hash": "FHrIQfGWJrmADzuUH/bOTDy4vhhKmE4eByj0LhKyZ+Y="
+    },
+    "maw": {
+        "salt": "OsiTpheKG/2CPS12t97LEw==",
+        "hash": "ly879PBqXvSlyh9fplnttAAfsy3PcBkFtEmx44WmqKQ="
     }
 }

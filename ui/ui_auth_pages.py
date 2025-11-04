@@ -7,6 +7,16 @@ def create_login_ui(app_instance):
     """Membuat UI login yang stabil."""
     app_instance.clear_frame()
     
+    # Import biometric module and check detailed status
+    try:
+        from modules.crypto_biometric import check_biometric_status
+        biometric_available, status_message = check_biometric_status()
+        app_instance.biometric_status = status_message
+    except Exception as e:
+        print(f"Error checking biometric availability: {e}")
+        biometric_available = False
+        app_instance.biometric_status = f"Error: {str(e)}"
+    
     # Main container that fills the window
     container = ttk.Frame(app_instance.root, style="ContentWrapper.TFrame")
     container.pack(expand=True, fill='both')
@@ -47,8 +57,44 @@ def create_login_ui(app_instance):
     app_instance.login_password_entry.pack(fill='x', padx=5, pady=(0, 15), ipady=5)
     # --- Akhir UI Stabil ---
 
-    ttk.Button(form_frame, text="Login", command=app_instance.on_login_click, style="Accent.TButton").pack(pady=20, fill='x', padx=5, ipady=5)
-    ttk.Button(form_frame, text="Belum punya akun? Register di sini", command=app_instance.create_register_ui, style="Link.TButton").pack(pady=15)
+    # Add buttons frame for login options
+    buttons_frame = ttk.Frame(form_frame)
+    buttons_frame.pack(fill='x', padx=5, pady=20)
+
+    # Regular login button
+    ttk.Button(buttons_frame, text="Login", 
+              command=app_instance.on_login_click, 
+              style="Accent.TButton").pack(side='left', fill='x', expand=True, ipady=5, padx=(0,5))
+
+    # Biometric login button (if available)
+    if biometric_available:
+        biometric_btn = ttk.Button(buttons_frame, text="🔐 Login dengan Windows Hello", 
+                                command=app_instance.on_biometric_login_click, 
+                                style="Accent.TButton")
+        biometric_btn.pack(side='right', fill='x', expand=True, ipady=5, padx=(5,0))
+        
+        # Add tooltip hint for biometric login
+        biometric_tooltip = ttk.Label(buttons_frame, 
+                                   text="Masukkan username dan klik untuk login dengan Windows Hello", 
+                                   style="Error.TLabel")
+        biometric_tooltip.pack(side='bottom', pady=(5,0))
+    else:
+        # Show why biometric is not available
+        status_frame = ttk.Frame(form_frame)
+        status_frame.pack(fill='x', pady=(10,0))
+        
+        status_icon = ttk.Label(status_frame, text="ℹ️", font=("Arial", 12))
+        status_icon.pack(side='left', padx=(5,0))
+        
+        status_label = ttk.Label(status_frame, 
+                               text=f"Status Windows Hello: {app_instance.biometric_status}",
+                               style="Error.TLabel",
+                               wraplength=350)
+        status_label.pack(side='left', padx=(5,0), fill='x', expand=True)
+
+    ttk.Button(form_frame, text="Belum punya akun? Register di sini", 
+              command=app_instance.create_register_ui, 
+              style="Link.TButton").pack(pady=15)
 
 def create_register_ui(app_instance):
     """Membuat UI register yang stabil."""

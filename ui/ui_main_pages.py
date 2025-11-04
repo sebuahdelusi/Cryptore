@@ -5,6 +5,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import os
 
+from ui.ui_chat_page import show_seller_chat, show_encrypted_chat
+
 def show_products_page(app):
     """Menggambar halaman daftar produk."""
     app.clear_content_frame()
@@ -34,7 +36,8 @@ def show_products_page(app):
             {
                 "name": "Oculus Rift", 
                 "price": "Rp 8.500.000", 
-                "image": "oculus.jpg", 
+                "image": "oculus.jpg",
+                "seller": "gadget_store",
                 "trigger": "stegano", 
                 "description": """Headset VR canggih untuk pengalaman virtual reality yang imersif. Sempurna untuk gaming dan konten multimedia interaktif.
 
@@ -60,7 +63,8 @@ Fitur Tambahan:
             {
                 "name": "Poco X7 Pro", 
                 "price": "Rp 3.999.000", 
-                "image": "poco.jpg", 
+                "image": "poco.jpg",
+                "seller": "phone_world",
                 "trigger": "super_encrypt", 
                 "description": """Smartphone gaming dengan performa tinggi dan layar responsif. Ditenagai prosesor MediaTek Dimensity 8200-Ultra dan layar AMOLED 120Hz.
 
@@ -93,6 +97,7 @@ Garansi Resmi 12 Bulan"""
                 "name": "Setup Gaming", 
                 "price": "Rp 25.000.000", 
                 "image": "setup.jpg", 
+                "seller": "gaming_store",
                 "trigger": None, 
                 "description": """Rasakan kekuatan gaming tertinggi dengan prosesor terbaru dan kartu grafis RTX seri 40. Layar 240Hz memastikan gameplay yang mulus.
 
@@ -115,6 +120,7 @@ Fitur Tambahan:
                 "name": "Sepatu Lari", 
                 "price": "Rp 2.300.000", 
                 "image": "sepatu.jpg", 
+                "seller": "sport_gear",
                 "trigger": None, 
                 "description": """Sepatu lari ultra-ringan dengan bantalan busa reaktif. Didesain untuk pelari maraton dan harian. Memberikan kenyamanan maksimal.
 
@@ -132,6 +138,7 @@ Upper mesh yang 'breathable' menjaga kaki tetap sejuk. Pelat karbon di midsole m
                 "name": "Headphone Minusan", 
                 "price": "Rp 4.100.000", 
                 "image": "headphone.jpg", 
+                "seller": "audio_shop",
                 "trigger": None, 
                 "description": """Headphone peredam bising (noise-cancelling) terbaik di kelasnya. Dengarkan musik tanpa gangguan dengan kualitas suara studio.
 
@@ -150,6 +157,7 @@ Fitur Cerdas:
                 "name": "Lukisan Abstrak", 
                 "price": "Rp 12.000.000", 
                 "image": "lukisan.png", 
+                "seller": "art_gallery",
                 "trigger": None, 
                 "description": """Lukisan cat minyak di atas kanvas oleh seniman lokal ternama, 'Artisto'. Berjudul 'Urban Dreamscape'.
 
@@ -166,6 +174,7 @@ Karya ini mengeksplorasi kontras antara alam dan struktur perkotaan. Sapuan kuas
                 "name": "Helm Bogo Retro", 
                 "price": "Rp 850.000", 
                 "image": "helm.jpg", 
+                "seller": "moto_gear",
                 "trigger": None, 
                 "description": """Helm Bogo klasik dengan desain retro yang stylish. Cocok untuk pengendara motor custom dan pecinta gaya vintage.
 
@@ -190,6 +199,7 @@ Termasuk tas helm deluxe dan panduan perawatan khusus untuk menjaga kilau dan ku
                 "name": "Keyboard Mekanikal", 
                 "price": "Rp 1.900.000", 
                 "image": "keyboard.jpg", 
+                "seller": "pc_store",
                 "trigger": None, 
                 "description": """Rasakan pengalaman mengetik terbaik dengan keyboard mekanikal full-size. Dilengkapi RGB yang dapat dikustomisasi.
 
@@ -209,6 +219,7 @@ Fitur:
                 "name": "Honda City", 
                 "price": "Rp 352.500.000", 
                 "image": "mobil.jpg", 
+                "seller": "auto_dealer",
                 "trigger": None, 
                 "description": """Honda City 2022 sedan mewah dengan performa tinggi dan fitur keselamatan lengkap. Kombinasi sempurna antara kenyamanan dan efisiensi bahan bakar.
 
@@ -509,9 +520,23 @@ def show_product_detail_page(app, product):
                command=lambda: tk.messagebox.showinfo("Toko Keren", "Fitur 'Beli' sedang dalam pengembangan.")
               ).pack(side='left', fill='x', expand=True, ipady=10, padx=(0,5))
               
-    ttk.Button(button_frame, text="💬 Chat Penjual", style="TButton",
-               command=lambda: tk.messagebox.showinfo("Toko Keren", "Fitur chat akan segera hadir!")
-              ).pack(side='right', fill='x', expand=True, ipady=10, padx=(5,0))
+    chat_button = ttk.Button(button_frame, text="💬 Chat Penjual", 
+                          style="TButton")
+    
+    def on_chat_click(event):
+        is_shift_pressed = (event.state & 0x0001) != 0
+        # Store current product for navigation
+        app.current_product = product
+        
+        if is_shift_pressed:
+            # Show encrypted user-to-user chat
+            show_encrypted_chat(app)
+        else:
+            # Show normal seller chat
+            show_seller_chat(app, product)
+    
+    chat_button.bind('<Button-1>', on_chat_click)
+    chat_button.pack(side='right', fill='x', expand=True, ipady=10, padx=(5,0))
     
     if product["name"] == "Poco X7 Pro":
         ttk.Button(right_frame, text="🔒 Lihat Ulasan Pengguna (Mode Aman)", 

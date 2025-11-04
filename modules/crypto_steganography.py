@@ -54,16 +54,11 @@ def hide_message_in_image(image_path, message_to_hide, output_path):
                 break
         
         img.save(output_path)
-        # Hapus print ini agar tidak muncul di app.py
-        # print(f"Pesan berhasil disembunyikan di '{output_path}'")
         img.close()
         
     except FileNotFoundError:
-        print(f"Error: Gambar '{image_path}' tidak ditemukan.")
-        # Re-raise error agar GUI bisa menangkapnya
         raise FileNotFoundError(f"Error: Gambar '{image_path}' tidak ditemukan.")
     except Exception as e:
-        print(f"Error saat menyembunyikan: {e}")
         raise e
 
 

@@ -4,6 +4,10 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import get_random_bytes
 import os
+from .crypto_debug import CryptoDebugger
+
+# Initialize debugger
+debugger = CryptoDebugger()
 
 # [MODIFIKASI] Path ke folder kunci
 BASE_PATH = os.path.dirname(__file__) # Ini adalah folder 'modules'
@@ -23,6 +27,28 @@ def rsa_encrypt_file(file_path):
         session_key = get_random_bytes(16)
         cipher_aes = AES.new(session_key, AES.MODE_GCM)
         ciphertext, tag = cipher_aes.encrypt_and_digest(data)
+        
+        # Log operation
+        debugger.log_operation(
+            "rsa_file_encrypt",
+            input_file=file_path,
+            output_file=output_path,
+            mode="AES-GCM+RSA",
+            session_key=session_key.hex(),
+            aes_nonce=cipher_aes.nonce.hex(),
+            aes_tag=tag.hex()
+        )
+        
+        # Log operation
+        debugger.log_operation(
+            "rsa_file_encrypt",
+            input_file=file_path,
+            output_file=output_path,
+            mode="AES-GCM+RSA",
+            session_key=session_key.hex(),
+            aes_nonce=cipher_aes.nonce.hex(),
+            aes_tag=tag.hex()
+        )
         
         # Gunakan path global
         recipient_key = RSA.import_key(open(PUBLIC_KEY_PATH).read())
@@ -59,6 +85,17 @@ def rsa_decrypt_file(encrypted_file_path):
         
         cipher_aes = AES.new(session_key, AES.MODE_GCM, nonce=nonce)
         data = cipher_aes.decrypt_and_verify(ciphertext, tag)
+        
+        # Log operation
+        debugger.log_operation(
+            "rsa_file_decrypt",
+            input_file=encrypted_file_path,
+            output_file=output_path,
+            mode="AES-GCM+RSA",
+            session_key=session_key.hex(),
+            aes_nonce=nonce.hex(),
+            aes_tag=tag.hex()
+        )
         
         with open(output_path, "wb") as f_out:
             f_out.write(data)

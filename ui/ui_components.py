@@ -5,6 +5,67 @@ from tkinter import ttk
 
 COLOR_SECONDARY = "#F3F3F3"
 
+class CryptoKeyPopup(tk.Toplevel):
+    """Popup window for entering encryption/decryption keys."""
+    def __init__(self, parent, title="Enter Keys", on_submit=None):
+        super().__init__(parent)
+        self.title(title)
+        self.resizable(False, False)
+        
+        # Center the window with larger dimensions
+        window_width = 500
+        window_height = 350
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 2
+        self.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        self.minsize(500, 350)  # Set minimum size to prevent shrinking
+        
+        # Create and pack widgets with improved styling
+        frame = ttk.Frame(self, padding="20", style="Product.TFrame")
+        frame.pack(fill=tk.BOTH, expand=True)
+        
+        ttk.Label(frame, text="Verification Code:", font=("Arial", 11, "bold"), style="Product.TLabel").pack(pady=(0, 5))
+        self.hill_key = ttk.Entry(frame, width=40, font=("Arial", 12))
+        self.hill_key.pack(fill=tk.X, pady=(0, 15), ipady=5)
+        
+        ttk.Label(frame, text="Password:", font=("Arial", 11, "bold"), style="Product.TLabel").pack(pady=(0, 5))
+        self.bf_key = ttk.Entry(frame, show="*", width=40, font=("Arial", 12))
+        self.bf_key.pack(fill=tk.X, pady=(0, 15), ipady=5)
+        
+        # Submit button
+        button_frame = ttk.Frame(frame, style="Product.TFrame")
+        button_frame.pack(fill=tk.X, pady=20, padx=50)
+        
+        submit_btn = tk.Button(button_frame, 
+                             text="Submit",
+                             command=self._on_submit,
+                             font=("Arial", 12, "bold"),
+                             bg="#0078D4",
+                             fg="white",
+                             width=20,
+                             height=2,
+                             relief="raised",
+                             borderwidth=1)
+        submit_btn.pack(fill=tk.X)
+        
+        # Bind hover effects
+        submit_btn.bind("<Enter>", lambda e: submit_btn.configure(bg="#006ac1"))
+        submit_btn.bind("<Leave>", lambda e: submit_btn.configure(bg="#0078D4"))
+        
+        self.on_submit_callback = on_submit
+        
+        # Make window modal
+        self.transient(parent)
+        self.grab_set()
+        self.hill_key.focus_set()
+        
+    def _on_submit(self):
+        if self.on_submit_callback:
+            self.on_submit_callback(self.hill_key.get().strip(), self.bf_key.get().strip())
+        self.destroy()
+
 class ScrollableFrame(ttk.Frame):
     """Frame yang bisa di-scroll secara vertikal."""
     def __init__(self, container, *args, **kwargs):

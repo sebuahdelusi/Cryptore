@@ -120,7 +120,6 @@ def super_encrypt(plaintext, hill_key_str, blowfish_key_str):
         
         return f"{iv_b64}:{cipher_b64}"
     except ValueError as e:
-        print(f"Error saat enkripsi: {e}")
         return None
 
 def super_decrypt(ciphertext_gabungan, hill_key_str, blowfish_key_str):
@@ -138,5 +137,4 @@ def super_decrypt(ciphertext_gabungan, hill_key_str, blowfish_key_str):
 
         return original_text
     except Exception as e:
-        print(f"Error saat dekripsi: {e}")
         return None

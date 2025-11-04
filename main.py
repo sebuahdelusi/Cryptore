@@ -7,13 +7,14 @@ import json
 import os
 
 # --- Impor dari folder modules/ ---
-from modules import crypto_login, crypto_steganography, crypto_super_encrypt, crypto_rsa_file
+from modules import crypto_login, crypto_steganography, crypto_super_encrypt, crypto_rsa_file, crypto_chat
 from modules.crypto_super_encrypt import create_key_matrix
 
 # --- Impor dari folder ui/ ---
 from ui.ui_components import ScrollableFrame
 from ui.ui_auth_pages import create_login_ui, create_register_ui
 from ui.ui_main_pages import show_products_page, show_product_detail_page
+from ui.ui_chat_page import show_chat_page
 from ui.ui_crypto_pages import show_account_page, show_reviews_page, show_stegano_page, show_view_review_page
 
 # --- Setup Path ---
@@ -24,6 +25,7 @@ KEY_PATH = os.path.join(ASSETS_PATH, "keys")
 DATA_PATH = os.path.join(BASE_PATH, "data")
 USER_DB_FILE = os.path.join(DATA_PATH, "users.json")
 REVIEWS_DB_FILE = os.path.join(DATA_PATH, "reviews.json")
+CHATS_DB_FILE = os.path.join(DATA_PATH, "chats.json")
 
 # Buat folder jika belum ada
 os.makedirs(DATA_PATH, exist_ok=True)
@@ -52,6 +54,9 @@ class DecoyEStoreApp:
         self.COLOR_TEXT = COLOR_TEXT 
         self.COLOR_HEADER = COLOR_HEADER
         self.COLOR_PRODUCT_BG = COLOR_PRODUCT_BG
+        
+        # Initialize chat system
+        self.chat_system = crypto_chat.SecureChat(CHATS_DB_FILE)
         
         self.is_logged_in = False
         self.current_user = None
@@ -146,9 +151,24 @@ class DecoyEStoreApp:
                   background=[('active', '#CFCFCF'), ('hover', '#EAEAEA')],
                   foreground=[('hover', COLOR_PRIMARY)])
                   
-        style.configure("Accent.TButton", font=("Arial", 12, "bold"), padding=10, relief="flat", background=COLOR_PRIMARY, foreground=COLOR_HEADER)
-        style.map("Accent.TButton", 
-                  background=[('active', '#005a9e'), ('hover', '#006ac1')])
+        # Modern button styles with improved visibility
+        # Simple and clean button styles
+        # Modern accent button style for regular buttons (like login)
+        style.configure("Accent.TButton", 
+                    font=("Arial", 12, "bold"),
+                    padding=10,
+                    width=15,
+                    background=COLOR_PRIMARY,
+                    foreground=COLOR_HEADER)
+        style.map("Accent.TButton",
+                 background=[('active', '#005a9e'), ('hover', '#006ac1')],
+                 foreground=[('active', COLOR_HEADER), ('hover', COLOR_HEADER)])
+                    
+        # Keep submit button style for compatibility
+        style.configure("Submit.TButton", 
+                    font=("Arial", 12, "bold"),
+                    padding=10,
+                    width=15)
         
         style.configure("Link.TButton", 
                         font=("Arial", 10), 
@@ -291,7 +311,9 @@ class DecoyEStoreApp:
         
         ttk.Label(self.header_frame, text="Toko Keren", font=("Arial", 18, "bold"), style="Header.TLabel").pack(side='left', padx=10)
         
-        ttk.Button(self.header_frame, text="Beranda", command=self.show_products_page, style="Nav.TButton").pack(side='left', padx=5)
+        ttk.Button(self.header_frame, text="Beranda", 
+                 command=self.show_products_page, 
+                 style="Nav.TButton").pack(side='left', padx=5)
         
         user_frame = ttk.Frame(self.header_frame, style="Header.TFrame")
         user_frame.pack(side='right', padx=10)
@@ -351,7 +373,32 @@ class DecoyEStoreApp:
         else:
             messagebox.showerror("Gagal", "Username atau password salah.")
             
+    def on_biometric_login_click(self):
+        """Handle Windows Hello biometric login."""
+        from modules.crypto_biometric import verify_biometric_sync
+        
+        username = self.login_username_entry.get()
+        if not username:
+            messagebox.showerror("Gagal", "Masukkan username untuk login biometrik")
+            return
+            
+        if username not in self.user_db:
+            messagebox.showerror("Gagal", "Username tidak ditemukan")
+            return
+            
+        if verify_biometric_sync():
+            self.is_logged_in = True
+            self.current_user = username
+            self.create_main_app_ui()
+        else:
+            messagebox.showerror("Gagal", "Verifikasi biometrik gagal")
+            
     def do_logout(self):
+        # Clear decrypted content from memory before logging out
+        if hasattr(self, 'chat_system') and self.chat_system:
+            # Force reload chats which clears decrypted content
+            self.chat_system.load_chats()
+            
         self.is_logged_in = False
         self.current_user = None
         self.image_cache = {}
