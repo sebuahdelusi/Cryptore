@@ -15,16 +15,37 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure chat message styles
+    # Configure chat message styles with theme awareness
     style = ttk.Style()
+    
+    # Theme-aware message bubble colors
+    if app.is_dark_mode:
+        others_msg_bg = "#2A4A5A"  # Dark blue-gray for other's messages
+        own_msg_bg = "#2A4A2A"     # Dark green for own messages
+        sender_color = "#999999"   # Lighter gray for sender text
+        msg_text_color = "#E0E0E0" # Light text for dark bubbles
+    else:
+        others_msg_bg = "#E3F2FD"  # Light blue for other's messages
+        own_msg_bg = "#DCF8C6"     # Light green for own messages
+        sender_color = "#666666"   # Dark gray for sender text
+        msg_text_color = "#222222" # Dark text for light bubbles
+    
     style.configure("ChatMsg.TFrame", 
-                   background="#E3F2FD",  # Light blue for other's messages
-                   relief="solid",
-                   borderwidth=1)
+                   background=others_msg_bg,
+                   relief="flat",
+                   borderwidth=0)
     style.configure("ChatMsg.Own.TFrame",
-                   background="#DCF8C6",  # Light green for own messages
-                   relief="solid", 
-                   borderwidth=1)
+                   background=own_msg_bg,
+                   relief="flat", 
+                   borderwidth=0)
+    
+    # Configure label styles for chat messages
+    style.configure("ChatMsg.TLabel",
+                   background=others_msg_bg,
+                   foreground=msg_text_color)
+    style.configure("ChatMsg.Own.TLabel",
+                   background=own_msg_bg,
+                   foreground=msg_text_color)
     
     # Configure grid
     content.columnconfigure(0, weight=1)
@@ -53,7 +74,7 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
     back_btn.pack(side='left')
     
     # User selection frame
-    user_frame = ttk.Frame(header_frame)
+    user_frame = ttk.Frame(header_frame, style="Product.TFrame")
     user_frame.pack(side='right', fill='x')
     
     selected_user = tk.StringVar()
@@ -129,12 +150,22 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
     canvas.create_window((0, 0), window=messages_frame, anchor="nw", width=canvas.winfo_reqwidth())
     canvas.configure(yscrollcommand=scrollbar.set)
     
+    # Add mousewheel scrolling for the canvas
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+    
+    # Bind mousewheel to the canvas and messages frame for scrolling
+    canvas.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
+    canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
+    messages_frame.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
+    messages_frame.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
+    
     # Pack the chat components
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
     
     # Message input area
-    input_frame = ttk.Frame(main_frame)
+    input_frame = ttk.Frame(main_frame, style="Product.TFrame")
     input_frame.pack(fill='x', pady=(10, 0))
     
     message_var = tk.StringVar()
@@ -203,11 +234,12 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
             messages = app.chat_system.chats.get(chat_key, [])
             
             # If no messages, show placeholder
+            placeholder_color = "#999999" if app.is_dark_mode else "#666666"
             if not messages:
                 placeholder = ttk.Label(messages_frame,
                                      text="Belum ada percakapan. Mulai chat dengan mengirim pesan.",
                                      font=("Arial", 11),
-                                     foreground="#666666",
+                                     foreground=placeholder_color,
                                      wraplength=400,
                                      justify='center')
                 placeholder.pack(pady=20)
@@ -227,19 +259,18 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
             
             # Display messages
             for msg in messages:
-                # Message frame
-                msg_frame = ttk.Frame(messages_frame, style="Product.TFrame")
-                msg_frame.pack(fill='x', padx=10, pady=5)
+                # Determine message alignment based on sender (case-insensitive comparison)
+                is_own_message = msg["sender"].strip().lower() == app.current_user.strip().lower()
                 
-                # Determine message alignment based on sender
-                is_own_message = msg["sender"] == app.current_user
-                align_side = 'e' if is_own_message else 'w'  # 'e' for right, 'w' for left
+                # Message wrapper frame - full width for positioning
+                msg_wrapper = ttk.Frame(messages_frame, style="Product.TFrame")
+                msg_wrapper.pack(fill='x', pady=5, padx=10)
                 
-                # Create inner frame for message content
-                inner_frame = ttk.Frame(msg_frame, style="Product.TFrame")
-                inner_frame.pack(side='right' if is_own_message else 'left', 
-                               fill='x', expand=False,
-                               padx=(50 if is_own_message else 0, 0 if is_own_message else 50))
+                # Create inner frame for message content with matching background
+                inner_frame = ttk.Frame(msg_wrapper, style="Product.TFrame")
+                inner_frame.pack(fill='x', expand=True)
+                
+                align_side = 'e' if is_own_message else 'w'
                 
                 # Sender info
                 if return_to_product:
@@ -248,10 +279,12 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
                     seller_name = msg["sender"]
                     
                 sender = "Anda" if is_own_message else seller_name
-                ttk.Label(inner_frame, 
+                sender_label = ttk.Label(inner_frame, 
                          text=f"{sender} • {msg['timestamp']}",
                          font=("Arial", 8),
-                         foreground="#666666").pack(anchor=align_side)
+                         foreground=sender_color,
+                         background=app.COLOR_PRODUCT_BG)
+                sender_label.pack(anchor=align_side)
                 
                 # Handle message content and encryption status
                 if msg["encrypted"]:
@@ -272,27 +305,30 @@ def show_chat_page(app, target_user=None, return_to_product=False, is_secure=Fal
                 
                 msg_label = ttk.Label(text_frame, 
                                     text=content_text,
-                                    wraplength=350,  # Slightly smaller to accommodate padding
-                                    justify='left' if not is_own_message else 'right',
-                                    font=("Arial", 11))
-                msg_label.pack(anchor=align_side, padx=10, pady=5)
+                                    wraplength=500,
+                                    justify='left',
+                                    font=("Arial", 11),
+                                    style="ChatMsg.Own.TLabel" if is_own_message else "ChatMsg.TLabel")
+                msg_label.pack(padx=10, pady=5)
                 
                 # Encryption status label
                 if lock_text:
                     status_frame = ttk.Frame(inner_frame, style="Product.TFrame")
-                    status_frame.pack(fill='x', pady=(2, 0))
+                    status_frame.pack(anchor=align_side, pady=(2, 0))
                     
                     lock_label = ttk.Label(status_frame,
                                          text=lock_text,
                                          font=("Arial", 8),
-                                         foreground="#666666")
+                                         foreground=sender_color,
+                                         background=app.COLOR_PRODUCT_BG)
                     lock_label.pack(side='right' if is_own_message else 'left', padx=5)
                     
                     if msg["encrypted"] and not "decrypted_content" in msg:
                         hint_label = ttk.Label(status_frame,
                                              text="Gunakan Kode Verifikasi & Password yang sama dengan pengirim untuk membaca pesan",
                                              font=("Arial", 8),
-                                             foreground="#666666")
+                                             foreground=sender_color,
+                                             background=app.COLOR_PRODUCT_BG)
                         hint_label.pack(side='right' if is_own_message else 'left', padx=5)
                 
                 # Add click handler for encrypted messages that aren't decrypted

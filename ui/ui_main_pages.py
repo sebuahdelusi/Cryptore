@@ -316,19 +316,37 @@ def _create_product_card(app, parent, product):
     button_frame = ttk.Frame(content_frame, style="Product.TFrame")
     button_frame.pack(fill='x')
     
+    # Theme-aware button colors
+    detail_btn_bg = "#3A3A3A" if app.is_dark_mode else "#f8f9fa"
+    detail_btn_hover = "#4A4A4A" if app.is_dark_mode else "#e9ecef"
+    
     # Use tk Button for hover effect
     detail_button = tk.Button(
         button_frame, 
         text="Lihat Detail",
         font=("Arial", 11),
-        bg="#f8f9fa",
+        bg=detail_btn_bg,
         fg=app.COLOR_TEXT,
+        activebackground=detail_btn_hover,
+        activeforeground=app.COLOR_TEXT,
+        highlightthickness=0,
+        highlightbackground=detail_btn_bg,
+        highlightcolor=detail_btn_bg,
         relief="flat",
         borderwidth=0,
         padx=10,
         pady=8,
         cursor="hand2"
     )
+    
+    # Add hover effect
+    def on_enter(e):
+        detail_button['bg'] = detail_btn_hover
+    def on_leave(e):
+        detail_button['bg'] = detail_btn_bg
+    detail_button.bind("<Enter>", on_enter)
+    detail_button.bind("<Leave>", on_leave)
+    
     handler = lambda e, p=product: app.on_product_click(e, p)
     detail_button.bind("<Button-1>", handler)
     detail_button.bind("<Shift-Button-1>", handler)
@@ -337,7 +355,7 @@ def _create_product_card(app, parent, product):
     if product["trigger"]:
         img_label.config(cursor="hand2")
     
-    # Bind hover events
+    # Bind hover events with theme-aware colors
     def on_enter(e):
         prod_frame.configure(relief="solid", borderwidth=2)
         detail_button.configure(
@@ -348,7 +366,7 @@ def _create_product_card(app, parent, product):
     def on_leave(e):
         prod_frame.configure(relief="solid", borderwidth=1)
         detail_button.configure(
-            bg="#f8f9fa",
+            bg=detail_btn_bg,
             fg=app.COLOR_TEXT
         )
     
@@ -517,7 +535,7 @@ def show_product_detail_page(app, product):
     button_frame.pack(fill='x', pady=20)
     
     ttk.Button(button_frame, text="🛒 Beli Sekarang", style="Accent.TButton",
-               command=lambda: tk.messagebox.showinfo("Toko Keren", "Fitur 'Beli' sedang dalam pengembangan.")
+               command=lambda: tk.messagebox.showinfo("Cryptore", "Fitur 'Beli' sedang dalam pengembangan.")
               ).pack(side='left', fill='x', expand=True, ipady=10, padx=(0,5))
               
     chat_button = ttk.Button(button_frame, text="💬 Chat Penjual", 

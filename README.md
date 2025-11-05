@@ -6,39 +6,48 @@ Cryptore is a secure e-commerce application that implements various cryptographi
 
 ### 1. Secure Authentication
 - Traditional username/password login
-- Windows Hello biometric authentication support
+- Windows Hello biometric authentication support (PIN, Fingerprint, Face Recognition)
+- Per-user Windows Hello configuration
 - Secure password hashing with salt
 
-### 2. Encrypted Chat System
+### 2. UI/UX Enhancements
+- **Light/Dark Mode Support** - Toggle between light and dark themes
+- Theme preference persistence across sessions
+- Fully themed interface with adaptive colors
+- Improved chat scrolling with mousewheel support
+- Enhanced button styling for better visibility
+- Responsive design with proper alignment
+
+### 3. Encrypted Chat System
 - End-to-end encrypted messaging
 - Super encryption using Hill Cipher and Blowfish
-- WhatsApp-style chat interface
+- WhatsApp-style chat interface with color-coded message bubbles
 - Independent message decryption
 - Secure chat history
+- Product seller chat integration
 
-### 3. File Security
+### 4. File Security
 - RSA file encryption/decryption
 - Support for any file type
 - Secure key management
 
-### 4. Steganography
+### 5. Steganography
 - Hide messages in images
 - Support for PNG, JPG, JPEG, and BMP formats
 - Secure metadata extraction
-
-### 5. Product Reviews
-- Encrypted review system
-- Secure storage of user feedback
-- Individual review decryption
+- Fixed text input handling
 
 ## 📋 Requirements
 
 - Python 3.8 or higher
+- Windows 10/11 (for Windows Hello support)
 - Required Python packages:
   - tkinter
   - PIL (Python Imaging Library)
   - cryptography
   - numpy
+  - keyring
+  - winrt (Windows Runtime for Windows Hello)
 
 ## 🛠️ Installation
 
@@ -50,13 +59,32 @@ cd Cryptore
 
 2. Install required packages:
 ```bash
-pip install pillow cryptography numpy
+pip install pillow cryptography numpy keyring winrt
 ```
 
-3. Run the application:
+3. Generate RSA keys (if not already present):
+```bash
+python generate_keys.py
+```
+
+4. Run the application:
 ```bash
 python main.py
 ```
+
+## 🎨 Theme Customization
+
+Cryptore now supports both light and dark modes:
+
+1. After logging in, click on your profile name in the top right
+2. Select "☀️ Light Mode" or "🌙 Dark Mode" from the dropdown
+3. Your preference is saved automatically and will persist across sessions
+
+**Dark Mode Features:**
+- Dark backgrounds for reduced eye strain
+- Optimized contrast for readability
+- Themed buttons, input fields, and chat bubbles
+- Seamless color transitions
 
 ## 📱 Usage Guide
 
@@ -64,6 +92,17 @@ python main.py
 1. Launch the application
 2. Register a new account or log in with existing credentials
 3. Optional: Set up Windows Hello for biometric login
+   - After logging in, click your profile name
+   - Select "🔐 Aktifkan Windows Hello"
+   - Follow the Windows Hello authentication prompt
+   - Once enabled, use the "🔐 Windows Hello" button on login page
+
+### Windows Hello Login
+1. On the login page, select your username from the dropdown
+2. Click "🔐 Windows Hello" button
+3. A notification will appear - look for the Windows Hello prompt
+4. Authenticate using PIN, fingerprint, or face recognition
+5. You'll be logged in automatically upon successful verification
 
 ### Secure Chat
 1. Navigate to the chat section
@@ -139,7 +178,8 @@ Cryptore/
 ├── data/
 │   ├── chats.json     # Encrypted chat history
 │   ├── users.json     # User credentials
-│   └── reviews.json   # Encrypted reviews
+│   ├── reviews.json   # Encrypted reviews
+│   └── theme.json     # User theme preferences
 ├── modules/
 │   ├── crypto_biometric.py     # Biometric authentication
 │   ├── crypto_chat.py          # Chat encryption

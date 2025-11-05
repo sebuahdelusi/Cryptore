@@ -68,14 +68,16 @@ class CryptoKeyPopup(tk.Toplevel):
 
 class ScrollableFrame(ttk.Frame):
     """Frame yang bisa di-scroll secara vertikal."""
-    def __init__(self, container, *args, **kwargs):
+    def __init__(self, container, bg_color=None, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         
         # Configure container to expand
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         
-        canvas = tk.Canvas(self, bg=COLOR_SECONDARY, highlightthickness=0)
+        # Use provided bg_color or fallback to global constant
+        canvas_bg = bg_color if bg_color else COLOR_SECONDARY
+        canvas = tk.Canvas(self, bg=canvas_bg, highlightthickness=0)
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
         
         # Create outer frame for centering
