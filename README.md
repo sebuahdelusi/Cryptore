@@ -193,8 +193,6 @@ Final Ciphertext → Blowfish → Intermediate Ciphertext → Hill Cipher → Pl
 
 ## 🚀 Fitur Lengkap
 
-## 🚀 Fitur Lengkap
-
 ### 1. 🔑 Sistem Autentikasi Aman
 **File:** `ui/ui_auth_pages.py`, `modules/crypto_login.py`
 
@@ -1047,56 +1045,3 @@ Project ini dibuat untuk keperluan akademik (Tugas Kriptografi, Semester 5).
 
 *Last Updated: 2024*
 *Version: 2.0 (dengan Light/Dark Mode & Windows Hello)*
-
-## 📁 Project Structure
-```
-Cryptore/
-├── main.py              # Main application file
-├── generate_keys.py     # RSA key generation
-├── assets/
-│   ├── images/         # Application images
-│   └── keys/           # RSA key storage
-├── data/
-│   ├── chats.json     # Encrypted chat history
-│   ├── users.json     # User credentials
-│   ├── reviews.json   # Encrypted reviews
-│   └── theme.json     # User theme preferences
-├── modules/
-│   ├── crypto_biometric.py     # Biometric authentication
-│   ├── crypto_chat.py          # Chat encryption
-│   ├── crypto_debug.py         # Debugging utilities
-│   ├── crypto_login.py         # Login security
-│   ├── crypto_rsa_file.py      # File encryption
-│   ├── crypto_steganography.py # Image steganography
-│   └── crypto_super_encrypt.py # Message encryption
-└── ui/
-    ├── ui_auth_pages.py    # Authentication UI
-    ├── ui_chat_page.py     # Chat interface
-    ├── ui_components.py    # Reusable components
-    ├── ui_crypto_pages.py  # Cryptography features
-    └── ui_main_pages.py    # Main application UI
-```
-
-## ⚠️ Important Notes
-
-1. Keep your verification codes and passwords secure
-2. Don't share encryption keys with untrusted parties
-3. Regularly backup your encrypted files
-4. Remember that forgotten passwords cannot be recovered
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Authors
-
-- Initial work - [sebuahdelusi]
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors and testers
-- Special thanks to the cryptography community
