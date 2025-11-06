@@ -408,7 +408,7 @@ class DecoyEStoreApp:
         
         ttk.Label(self.header_frame, text="Cryptore", font=("Arial", 18, "bold"), style="Header.TLabel").pack(side='left', padx=10)
         
-        ttk.Button(self.header_frame, text="Beranda", 
+        ttk.Button(self.header_frame, text="Beranda",   
                  command=self.show_products_page, 
                  style="Nav.TButton").pack(side='left', padx=5)
         
