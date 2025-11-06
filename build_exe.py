@@ -8,12 +8,11 @@ import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # PyInstaller configuration
-PyInstaller.__main__.run([
+args = [
     'main.py',
     '--name=Cryptore',
     '--onefile',
     '--windowed',
-    '--icon=assets/images/logo.png' if os.path.exists('assets/images/logo.png') else '',
     '--add-data=assets;assets',
     '--add-data=data;data',
     '--add-data=modules;modules',
@@ -27,7 +26,13 @@ PyInstaller.__main__.run([
     '--collect-all=keyring',
     '--noconsole',
     '--clean',
-])
+]
+
+# Add icon if it exists
+if os.path.exists('assets/images/logo.png'):
+    args.insert(4, '--icon=assets/images/logo.png')
+
+PyInstaller.__main__.run(args)
 
 print("\n" + "="*60)
 print("Build complete! Executable is in the 'dist' folder")

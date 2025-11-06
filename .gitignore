@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+*.spec
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Private Keys (IMPORTANT!)
+assets/keys/private_key.pem
+
+# User Data (Privacy)
+data/users.json
+data/chats.json
+data/reviews.json
+data/theme.json
+data/crypto_debug.json
+
+# Temporary files
+temp_*.py
+*.tmp
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# PyInstaller
+*.spec
+dist/
+build/
