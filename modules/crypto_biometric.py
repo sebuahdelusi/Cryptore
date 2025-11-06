@@ -1,5 +1,6 @@
 
 import sys
+import os
 import subprocess
 import asyncio
 from winrt.windows.security.credentials.ui import (
@@ -7,6 +8,10 @@ from winrt.windows.security.credentials.ui import (
     UserConsentVerifierAvailability,
     UserConsentVerificationResult
 )
+
+
+def _is_frozen():
+    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
 
 
 async def _check_availability_async():
@@ -58,6 +63,26 @@ def _hello_helper_main(flag, message=None):
 
 
 def _run_helper_process(flag, message=None):
+    if _is_frozen():
+        if flag == "--hello-available":
+            result = asyncio.run(_check_availability_async())
+            if result == "AVAILABLE":
+                return 0
+            elif result == "NOT_CONFIGURED":
+                return 1
+            else:
+                return 2
+        elif flag == "--hello-verify":
+            static_message = "Konfirmasi identitas Anda untuk Cryptore"
+            result = asyncio.run(_request_verification_async(static_message))
+            if result == "VERIFIED":
+                return 0
+            elif result == "CANCELED":
+                return 1
+            else:
+                return 2
+        return 99
+    
     command = [sys.executable, __file__, flag]
     
     try:
