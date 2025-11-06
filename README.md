@@ -1021,9 +1021,14 @@ Project ini dibuat untuk keperluan akademik (Tugas Kriptografi, Semester 5).
 
 **Academic Use Only** - Tidak untuk produksi commercial tanpa review security lengkap.
 
-## 👥 Authors
+## 👥 Tim Pengembang
 
-- **sebuahdelusi** - Initial work & development
+**Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**
+
+- **Gorbi Ello Pasaribu** - 123230083 - IF-H
+- **Athallah Joyoningrat** - 123230230 - IF-H
+
+**Mata Kuliah:** Kriptografi - Semester 5
 
 ## 🙏 Acknowledgments
 
