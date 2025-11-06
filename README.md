@@ -1,3 +1,15 @@
+---
+
+## 👥 Tim Pengembang
+
+**Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**  
+**Mata Kuliah:** Kriptografi - Semester 5
+
+- **Gorbi Ello Pasaribu** - 123230083 - IF-H
+- **Athallah Joyoningrat** - 123230230 - IF-H
+
+---
+
 # Cryptore - Secure Cryptographic E-commerce Application
 
 > **📥 Ingin langsung download aplikasi?** Kunjungi halaman **[Releases](https://github.com/sebuahdelusi/Cryptore/releases)** untuk download executable siap pakai.  
@@ -1021,16 +1033,7 @@ Project ini dibuat untuk keperluan akademik (Tugas Kriptografi, Semester 5).
 
 **Academic Use Only** - Tidak untuk produksi commercial tanpa review security lengkap.
 
-## 👥 Tim Pengembang
-
-**Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**
-
-- **Gorbi Ello Pasaribu** - 123230083 - IF-H
-- **Athallah Joyoningrat** - 123230230 - IF-H
-
-**Mata Kuliah:** Kriptografi - Semester 5
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Terima kasih kepada dosen pengampu mata kuliah Kriptografi
 - Python Cryptography Community
