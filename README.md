@@ -1,5 +1,3 @@
----
-
 ## 👥 Tim Pengembang
 
 **Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**  
@@ -7,8 +5,6 @@
 
 - **Gorbi Ello Pasaribu** - 123230083 - IF-H
 - **Athallah Joyoningrat** - 123230230 - IF-H
-
----
 
 # Cryptore - Secure Cryptographic E-commerce Application
 
