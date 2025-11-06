@@ -1,4 +1,3 @@
-# Simpan sebagai: modules/crypto_rsa_file.py
 
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_OAEP
@@ -6,10 +5,8 @@ from Crypto.Random import get_random_bytes
 import os
 from .crypto_debug import CryptoDebugger
 
-# Initialize debugger
 debugger = CryptoDebugger()
 
-# [MODIFIKASI] Path ke folder kunci
 BASE_PATH = os.path.dirname(__file__) # Ini adalah folder 'modules'
 ASSETS_PATH = os.path.join(BASE_PATH, "..", "assets") # Naik satu level, lalu ke 'assets'
 KEY_PATH = os.path.join(ASSETS_PATH, "keys")
@@ -18,7 +15,6 @@ PRIVATE_KEY_PATH = os.path.join(KEY_PATH, "private_key.pem")
 
 
 def rsa_encrypt_file(file_path):
-    """Menenkripsi file menggunakan Kunci Publik."""
     try:
         output_path = file_path + ".enc"
         with open(file_path, "rb") as f_in:
@@ -28,7 +24,6 @@ def rsa_encrypt_file(file_path):
         cipher_aes = AES.new(session_key, AES.MODE_GCM)
         ciphertext, tag = cipher_aes.encrypt_and_digest(data)
         
-        # Log operation
         debugger.log_operation(
             "rsa_file_encrypt",
             input_file=file_path,
@@ -39,7 +34,6 @@ def rsa_encrypt_file(file_path):
             aes_tag=tag.hex()
         )
         
-        # Log operation
         debugger.log_operation(
             "rsa_file_encrypt",
             input_file=file_path,
@@ -50,7 +44,6 @@ def rsa_encrypt_file(file_path):
             aes_tag=tag.hex()
         )
         
-        # Gunakan path global
         recipient_key = RSA.import_key(open(PUBLIC_KEY_PATH).read())
         cipher_rsa = PKCS1_OAEP.new(recipient_key)
         enc_session_key = cipher_rsa.encrypt(session_key)
@@ -67,11 +60,9 @@ def rsa_encrypt_file(file_path):
         raise e
 
 def rsa_decrypt_file(encrypted_file_path):
-    """Mendekripsi file menggunakan Kunci Privat."""
     try:
         output_path, _ = os.path.splitext(encrypted_file_path)
         
-        # Gunakan path global
         private_key = RSA.import_key(open(PRIVATE_KEY_PATH).read())
 
         with open(encrypted_file_path, "rb") as f_in:
@@ -86,7 +77,6 @@ def rsa_decrypt_file(encrypted_file_path):
         cipher_aes = AES.new(session_key, AES.MODE_GCM, nonce=nonce)
         data = cipher_aes.decrypt_and_verify(ciphertext, tag)
         
-        # Log operation
         debugger.log_operation(
             "rsa_file_decrypt",
             input_file=encrypted_file_path,

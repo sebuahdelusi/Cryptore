@@ -1,4 +1,3 @@
-# Simpan sebagai: main.py
 
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog, END
@@ -8,18 +7,15 @@ import os
 import sys
 import keyring
 
-# --- Impor dari folder modules/ ---
 from modules import crypto_login, crypto_steganography, crypto_super_encrypt, crypto_rsa_file, crypto_chat
 from modules.crypto_super_encrypt import create_key_matrix
 
-# --- Impor dari folder ui/ ---
 from ui.ui_components import ScrollableFrame
 from ui.ui_auth_pages import create_login_ui, create_register_ui
 from ui.ui_main_pages import show_products_page, show_product_detail_page
 from ui.ui_chat_page import show_chat_page
 from ui.ui_crypto_pages import show_account_page, show_reviews_page, show_stegano_page, show_view_review_page
 
-# --- Setup Path ---
 BASE_PATH = os.path.dirname(__file__)
 ASSETS_PATH = os.path.join(BASE_PATH, "assets")
 IMAGE_PATH = os.path.join(ASSETS_PATH, "images")
@@ -29,12 +25,10 @@ USER_DB_FILE = os.path.join(DATA_PATH, "users.json")
 REVIEWS_DB_FILE = os.path.join(DATA_PATH, "reviews.json")
 CHATS_DB_FILE = os.path.join(DATA_PATH, "chats.json")
 
-# Buat folder jika belum ada
 os.makedirs(DATA_PATH, exist_ok=True)
 os.makedirs(IMAGE_PATH, exist_ok=True)
 os.makedirs(KEY_PATH, exist_ok=True)
 
-# Palet Warna (didefinisikan di sini agar bisa diakses global oleh App)
 COLOR_PRIMARY = "#0078D4"
 COLOR_SECONDARY = "#F3F3F3"
 COLOR_HEADER = "#FFFFFF"
@@ -42,7 +36,6 @@ COLOR_TEXT = "#222222"
 COLOR_PRODUCT_BG = "#FFFFFF"
 COLOR_ERROR = "#D83B01"
 
-# --- Kelas Aplikasi Utama ---
 class DecoyEStoreApp:
     
     def __init__(self, root):
@@ -50,14 +43,12 @@ class DecoyEStoreApp:
         self.root.title("Cryptore - Secure Application")
         self.root.geometry("1200x800")
         
-        # Theme management
         self.is_dark_mode = False
         self.load_theme_preference()
         self.apply_theme()
         
         self.root.configure(bg=self.COLOR_SECONDARY)
         
-        # Initialize chat system
         self.chat_system = crypto_chat.SecureChat(CHATS_DB_FILE)
         
         self.is_logged_in = False
@@ -84,7 +75,6 @@ class DecoyEStoreApp:
         self.root.after(1500, self.on_splash_faded_out)
     
     def load_theme_preference(self):
-        """Load theme preference from file."""
         theme_file = os.path.join(DATA_PATH, "theme.json")
         try:
             if os.path.exists(theme_file):
@@ -97,7 +87,6 @@ class DecoyEStoreApp:
             self.is_dark_mode = False
     
     def save_theme_preference(self):
-        """Save theme preference to file."""
         theme_file = os.path.join(DATA_PATH, "theme.json")
         try:
             with open(theme_file, "w") as f:
@@ -106,9 +95,7 @@ class DecoyEStoreApp:
             print(f"Failed to save theme: {e}")
     
     def apply_theme(self):
-        """Apply the current theme colors."""
         if self.is_dark_mode:
-            # Dark mode colors
             self.COLOR_PRIMARY = "#4A9EFF"
             self.COLOR_SECONDARY = "#1E1E1E"
             self.COLOR_HEADER = "#2D2D2D"
@@ -116,7 +103,6 @@ class DecoyEStoreApp:
             self.COLOR_PRODUCT_BG = "#252525"
             self.COLOR_ERROR = "#FF6B6B"
         else:
-            # Light mode colors
             self.COLOR_PRIMARY = "#0078D4"
             self.COLOR_SECONDARY = "#F3F3F3"
             self.COLOR_HEADER = "#FFFFFF"
@@ -124,17 +110,14 @@ class DecoyEStoreApp:
             self.COLOR_PRODUCT_BG = "#FFFFFF"
             self.COLOR_ERROR = "#D83B01"
         
-        # Update root background
         self.root.configure(bg=self.COLOR_SECONDARY)
     
     def toggle_theme(self):
-        """Toggle between light and dark mode."""
         self.is_dark_mode = not self.is_dark_mode
         self.save_theme_preference()
         self.apply_theme()
         self.setup_styles()
         
-        # Refresh the current page
         if self.is_logged_in:
             self.create_main_app_ui()
         else:
@@ -147,7 +130,6 @@ class DecoyEStoreApp:
         style.configure("TFrame", background=self.COLOR_SECONDARY)
         style.configure("Header.TFrame", background=self.COLOR_HEADER, borderwidth=1, relief="solid")
         
-        # Modern product card styles
         style.configure("Product.TFrame", 
                         background=self.COLOR_PRODUCT_BG, 
                         relief="solid", 
@@ -156,20 +138,17 @@ class DecoyEStoreApp:
         style.configure("Shadow.TFrame",
                         background=self.COLOR_SECONDARY)
                         
-        # Modern style for all pages
         style.configure("CryptoPage.TFrame", 
                     background=self.COLOR_PRODUCT_BG,
                     relief="solid", 
                     borderwidth=1,
                     padding=20)
         
-        # Add subtle shadow effect
         style.configure("ModernFrame.TFrame",
                     background=self.COLOR_PRODUCT_BG,
                     relief="solid",
                     borderwidth=1)
 
-        # Modern splash screen styles with transparency support
         style.configure("Splash.TFrame", 
                     background=self.COLOR_PRODUCT_BG)
         style.configure("Splash.TLabel", 
@@ -177,14 +156,12 @@ class DecoyEStoreApp:
                     foreground=self.COLOR_TEXT,
                     font=("Arial", 28, "bold"))
         
-        # Update CryptoPage frame for splash
         style.configure("CryptoPage.TFrame",
                     background=self.COLOR_PRODUCT_BG,
                     relief="solid",
                     borderwidth=1,
                     padding=20)
 
-        # Content wrapper style for centering
         style.configure("ContentWrapper.TFrame", background=self.COLOR_SECONDARY)
         
         style.configure("TLabel", background=self.COLOR_SECONDARY, foreground=self.COLOR_TEXT, font=("Arial", 11))
@@ -205,7 +182,6 @@ class DecoyEStoreApp:
         style.configure("PageTitle.TLabel", background=self.COLOR_SECONDARY, foreground=self.COLOR_TEXT, font=("Arial", 20, "bold"))
         style.configure("Crypto.TLabel", background=self.COLOR_PRODUCT_BG, foreground=self.COLOR_TEXT, font=("Arial", 11))
         
-        # Theme-aware button colors
         button_bg = "#3A3A3A" if self.is_dark_mode else "#E1E1E1"
         button_hover = "#4A4A4A" if self.is_dark_mode else "#EAEAEA"
         button_active = "#2A2A2A" if self.is_dark_mode else "#CFCFCF"
@@ -215,9 +191,6 @@ class DecoyEStoreApp:
                   background=[('active', button_active), ('hover', button_hover)],
                   foreground=[('hover', self.COLOR_PRIMARY)])
                   
-        # Modern button styles with improved visibility
-        # Simple and clean button styles
-        # Modern accent button style for regular buttons (like login)
         accent_hover = "#3A8AE8" if self.is_dark_mode else "#006ac1"
         accent_active = "#2A7AD8" if self.is_dark_mode else "#005a9e"
         accent_fg = "#FFFFFF" if self.is_dark_mode else self.COLOR_HEADER
@@ -232,7 +205,6 @@ class DecoyEStoreApp:
                  background=[('active', accent_active), ('hover', accent_hover)],
                  foreground=[('active', accent_fg), ('hover', accent_fg)])
                     
-        # Submit button style (matches Accent.TButton)
         style.configure("Submit.TButton", 
                     font=("Arial", 12, "bold"),
                     padding=10,
@@ -258,7 +230,6 @@ class DecoyEStoreApp:
                   foreground=[('active', link_active), ('hover', link_hover)],
                   underline=[('hover', 1)])
         
-        # Theme-aware entry field
         entry_bg = "#2A2A2A" if self.is_dark_mode else "white"
         entry_fg = "#E0E0E0" if self.is_dark_mode else "#222222"
         
@@ -278,7 +249,6 @@ class DecoyEStoreApp:
         style.configure("TLabelFrame", background=self.COLOR_SECONDARY, font=("Arial", 11))
         style.configure("TLabelFrame.Label", background=self.COLOR_SECONDARY, foreground=self.COLOR_TEXT, font=("Arial", 12, "bold"))
         
-        # --- Modern LabelFrame Styles ---
         style.configure("TLabelframe", 
                         background=self.COLOR_PRODUCT_BG)
         style.configure("TLabelframe.Label", 
@@ -295,7 +265,6 @@ class DecoyEStoreApp:
                         foreground=self.COLOR_TEXT,
                         font=("Arial", 14, "bold"),
                         padding=(10, 5))
-        # --- -------------------------------------------- ---
 
         style.configure("Nav.TButton", 
                         font=("Arial", 11, "bold"), 
@@ -307,7 +276,6 @@ class DecoyEStoreApp:
                   background=[('active', '#EAEAEA'), ('hover', '#F0F0F0')],
                   foreground=[('hover', self.COLOR_PRIMARY)])
 
-        # Theme-aware Logout button colors
         logout_bg = "#3A3A3A" if self.is_dark_mode else "#FAFAFA"
         logout_hover = "#4A4A4A" if self.is_dark_mode else "#F0F0F0"
         logout_active = "#2A2A2A" if self.is_dark_mode else "#E0E0E0"
@@ -324,7 +292,6 @@ class DecoyEStoreApp:
         style.map("Nav.Logout.TButton", 
                   background=[('active', logout_active), ('hover', logout_hover)])
         
-        # Style for profile menubutton
         style.configure("Profile.TMenubutton",
                        font=("Arial", 10),
                        padding=(8, 6),
@@ -336,11 +303,9 @@ class DecoyEStoreApp:
                  foreground=[('hover', self.COLOR_PRIMARY)])
 
 
-    # --- Fungsi Animasi & DB ---
     def create_splash_screen(self):
         self.clear_frame()
         
-        # Create simple splash frame
         splash_frame = ttk.Frame(self.root)
         splash_frame.pack(expand=True)
         
@@ -350,7 +315,6 @@ class DecoyEStoreApp:
         else:
             ttk.Label(splash_frame, text="Cryptore", font=("Arial", 28, "bold")).pack(pady=20)
             
-        # Version text
         ttk.Label(splash_frame, text="CryptoVault", font=("Arial", 16, "bold")).pack()
         ttk.Label(splash_frame, text="v1.0", font=("Arial", 14)).pack(pady=10)
     
@@ -359,7 +323,6 @@ class DecoyEStoreApp:
         self.create_login_ui()
     
     def on_splash_faded_out(self):
-        # Show splash for 1.5 seconds then switch to login
         self.root.after(1500, self.fade_out_splash)
     
     def load_user_db(self):
@@ -393,7 +356,6 @@ class DecoyEStoreApp:
         self.content_area = ScrollableFrame(self.root, bg_color=self.COLOR_SECONDARY)
         self.content_area.pack(expand=True, fill='both')
 
-    # --- Panggilan ke UI Halaman ---
     def create_login_ui(self):
         create_login_ui(self)
     
@@ -418,36 +380,29 @@ class DecoyEStoreApp:
         logout_button = ttk.Button(user_frame, text="Logout", command=self.do_logout, style="Nav.Logout.TButton")
         logout_button.pack(side='right', padx=10)
         
-        # Add profile dropdown button
         profile_button = ttk.Menubutton(user_frame, text=f"👤 {self.current_user}", style="Profile.TMenubutton")
         profile_button.pack(side='right', padx=5)
         
-        # Create dropdown menu
         profile_menu = tk.Menu(profile_button, tearoff=0, font=("Arial", 10))
         profile_button['menu'] = profile_menu
         
-        # Check Windows Hello availability
         from modules.crypto_biometric import check_biometric_availability
         wh_available, wh_status = check_biometric_availability()
         
-        # Check if Windows Hello is already configured for this user
         try:
             wh_enabled = keyring.get_password("CryptoreApp_WH", self.current_user)
             wh_configured = (wh_enabled == "enabled")
         except:
             wh_configured = False
         
-        # Add Windows Hello menu item
         if wh_available:
             if wh_configured:
                 profile_menu.add_command(label="✓ Windows Hello Aktif", command=self.show_windows_hello_settings)
             else:
                 profile_menu.add_command(label="🔐 Aktifkan Windows Hello", command=self.enable_windows_hello)
         else:
-            # Add disabled menu item
             profile_menu.add_command(label="🔐 Windows Hello (Tidak Tersedia)", state='disabled')
         
-        # Add theme toggle menu item
         theme_label = "🌙 Dark Mode" if not self.is_dark_mode else "☀️ Light Mode"
         profile_menu.add_command(label=theme_label, command=self.toggle_theme)
         
@@ -476,7 +431,6 @@ class DecoyEStoreApp:
     def show_view_review_page(self):
         show_view_review_page(self)
 
-    # --- Handler Logika (Bisnis) ---
     
     def on_register_click(self):
         username = self.reg_username_entry.get()
@@ -502,7 +456,6 @@ class DecoyEStoreApp:
         user_data = self.user_db[username]
         
         if crypto_login.verify_password(user_data["salt"], user_data["hash"], password):
-            # Don't automatically save to keyring - user must explicitly enable Windows Hello
             self.is_logged_in = True
             self.current_user = username
             self.create_main_app_ui()
@@ -510,7 +463,6 @@ class DecoyEStoreApp:
             messagebox.showerror("Gagal", "Username atau password salah.")
             
     def on_biometric_login_click(self):
-        """Handle Windows Hello biometric login using the new keyring method."""
         from modules.crypto_biometric import verify_biometric_with_prompt
         
         username_from_box = self.login_username_entry.get()
@@ -522,7 +474,6 @@ class DecoyEStoreApp:
             messagebox.showerror("Gagal", "Username tidak ditemukan.")
             return
         
-        # Check if Windows Hello is enabled for THIS specific user
         try:
             wh_enabled = keyring.get_password("CryptoreApp_WH", username_from_box)
             if wh_enabled != "enabled":
@@ -538,23 +489,19 @@ class DecoyEStoreApp:
             )
             return
             
-        # Bring window to front and show waiting message
         self.root.lift()
         self.root.attributes('-topmost', True)
         self.root.after(100, lambda: self.root.attributes('-topmost', False))
         
-        # Show info that Windows Hello prompt will appear
         messagebox.showinfo(
             "Windows Hello",
             "Jendela Windows Hello akan muncul.\n"
             "Silakan cek layar Anda untuk mengautentikasi."
         )
         
-        # Verify with Windows Hello
         verification_success = verify_biometric_with_prompt()
         
         if verification_success:
-            # Windows Hello verified - log in as the specified user
             self.is_logged_in = True
             self.current_user = username_from_box
             self.create_main_app_ui()
@@ -562,7 +509,6 @@ class DecoyEStoreApp:
             messagebox.showwarning("Gagal", "Verifikasi biometrik gagal atau dibatalkan.")
     
     def enable_windows_hello(self):
-        """Enable Windows Hello for the current user."""
         from modules.crypto_biometric import verify_biometric_with_prompt
         
         response = messagebox.askyesno(
@@ -574,29 +520,24 @@ class DecoyEStoreApp:
         if not response:
             return
         
-        # Bring window to front and show waiting message
         self.root.lift()
         self.root.attributes('-topmost', True)
         self.root.after(100, lambda: self.root.attributes('-topmost', False))
         
-        # Show info that Windows Hello prompt will appear
         messagebox.showinfo(
             "Windows Hello",
             "Jendela Windows Hello akan muncul.\n"
             "Silakan cek layar Anda untuk mengautentikasi."
         )
         
-        # Verify with Windows Hello
         if verify_biometric_with_prompt():
             try:
-                # Store a flag for THIS specific user
                 keyring.set_password("CryptoreApp_WH", self.current_user, "enabled")
                 messagebox.showinfo(
                     "Berhasil",
                     f"Windows Hello berhasil diaktifkan untuk '{self.current_user}'!\n\n"
                     f"Sekarang Anda dapat login menggunakan Windows Hello di halaman login."
                 )
-                # Refresh the UI to update the menu
                 self.create_main_app_ui()
             except Exception as e:
                 messagebox.showerror("Error", f"Gagal menyimpan ke keyring: {e}")
@@ -604,15 +545,12 @@ class DecoyEStoreApp:
             messagebox.showwarning("Gagal", "Verifikasi Windows Hello gagal atau dibatalkan.")
     
     def show_windows_hello_settings(self):
-        """Show Windows Hello settings dialog."""
-        # Create a simple dialog
         dialog = tk.Toplevel(self.root)
         dialog.title("Pengaturan Windows Hello")
         dialog.geometry("400x250")
         dialog.transient(self.root)
         dialog.grab_set()
         
-        # Center the dialog
         dialog.update_idletasks()
         x = (dialog.winfo_screenwidth() // 2) - (dialog.winfo_width() // 2)
         y = (dialog.winfo_screenheight() // 2) - (dialog.winfo_height() // 2)
@@ -635,7 +573,6 @@ class DecoyEStoreApp:
                   style="Link.TButton").pack(side='left', padx=5)
     
     def disable_windows_hello(self, dialog=None):
-        """Disable Windows Hello for the current user."""
         response = messagebox.askyesno(
             "Nonaktifkan Windows Hello",
             f"Nonaktifkan Windows Hello untuk '{self.current_user}'?\n\n"
@@ -646,14 +583,12 @@ class DecoyEStoreApp:
             return
         
         try:
-            # Check if Windows Hello is enabled for this user
             wh_enabled = keyring.get_password("CryptoreApp_WH", self.current_user)
             if wh_enabled == "enabled":
                 keyring.delete_password("CryptoreApp_WH", self.current_user)
                 messagebox.showinfo("Berhasil", "Windows Hello berhasil dinonaktifkan.")
                 if dialog:
                     dialog.destroy()
-                # Refresh the UI to update the menu
                 self.create_main_app_ui()
             else:
                 messagebox.showwarning("Perhatian", "Windows Hello tidak aktif untuk user ini.")
@@ -661,9 +596,7 @@ class DecoyEStoreApp:
             messagebox.showerror("Error", f"Gagal menonaktifkan: {e}")
             
     def do_logout(self):
-        # Clear decrypted content from memory before logging out
         if hasattr(self, 'chat_system') and self.chat_system:
-            # Force reload chats which clears decrypted content
             self.chat_system.load_chats()
             
         self.is_logged_in = False
@@ -681,7 +614,6 @@ class DecoyEStoreApp:
         else:
             self.show_product_detail_page(product)
 
-    # --- Handler Kripto ---
     def select_file_to_encrypt(self):
         path = filedialog.askopenfilename(title="Pilih file APAPUN untuk dienkripsi")
         if path: self.encrypt_file_path_var.set(path)
@@ -793,7 +725,6 @@ class DecoyEStoreApp:
             messagebox.showinfo("Sukses", "Ekstraksi metadata selesai.")
         except Exception as e: messagebox.showerror("Error", f"Gagal: {e}")
 
-# --- Jalankan Aplikasi ---
 if __name__ == "__main__":
     
     if "--hello-available" in sys.argv or "--hello-verify" in sys.argv:
@@ -803,7 +734,7 @@ if __name__ == "__main__":
             message = sys.argv[2] if len(sys.argv) > 2 else None
             _hello_helper_main(flag, message)
         except Exception as e:
-            sys.exit(98) # Error internal helper
+            sys.exit(98)
 
     root = tk.Tk()
     try:

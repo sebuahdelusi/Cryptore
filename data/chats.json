@@ -5,6 +5,12 @@
             "timestamp": "2025-11-04 08:28:45",
             "encrypted": false,
             "content": "wow"
+        },
+        {
+            "sender": "wow",
+            "timestamp": "2025-11-05 10:21:29",
+            "encrypted": false,
+            "content": "duarrrr"
         }
     ],
     "maw_wow": [

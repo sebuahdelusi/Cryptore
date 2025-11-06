@@ -1,21 +1,16 @@
-# Simpan sebagai: ui/ui_crypto_pages.py
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 import os
 
 def show_account_page(app):
-    """Menggambar halaman Akun Saya (RSA)."""
-    # Configure styles first
     style = ttk.Style(app.root)
     
-    # Configure modern frame style
     style.configure("CryptoPage.TFrame",
                    background="white",
                    relief="flat",
                    borderwidth=0)
     
-    # Configure Label styles
     style.configure("Crypto.TLabel",
                    background="white",
                    font=("Arial", 11))
@@ -27,17 +22,15 @@ def show_account_page(app):
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure columns for centering
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=2)  # Content column
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=2)
+    content.columnconfigure(2, weight=1)
     
     back_button = ttk.Button(content, text="< Kembali ke Beranda", command=app.show_products_page, style="Link.TButton")
     back_button.grid(row=0, column=1, sticky='w', padx=10, pady=(10,0))
     
     ttk.Label(content, text="Manajemen Dokumen", style="PageTitle.TLabel").grid(row=1, column=1, sticky='w', pady=(5, 20), padx=20)
     
-    # Center-aligned wrapper with max width
     wrapper = ttk.Frame(content, style="TFrame")
     wrapper.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
     wrapper.columnconfigure(0, weight=1)
@@ -47,14 +40,11 @@ def show_account_page(app):
         ttk.Label(wrapper, text="Jalankan file 'generate_keys.py' satu kali.", style="TLabel").pack()
         return
         
-    # --- [ROMBAK] Mengganti ttk.LabelFrame dengan ttk.Frame + ttk.Label ---
     enc_frame = ttk.Frame(wrapper, style="CryptoPage.TFrame", padding=20)
     enc_frame.pack(fill='x', padx=10, pady=10)
     
-    # Ini adalah judul 'LabelFrame' yang baru
     ttk.Label(enc_frame, text="Enkripsi Dokumen", font=("Arial", 14, "bold"), style="Crypto.TLabel").pack(anchor='w', pady=(0, 10))
     
-    # Widget konten sekarang di-pack ke 'enc_frame'
     btn_enc_select = ttk.Button(enc_frame, text="1. Pilih Dokumen (PDF, TXT, dll)...", command=app.select_file_to_encrypt)
     btn_enc_select.pack(fill='x', pady=5)
     app.encrypt_file_path_var = tk.StringVar(value="Belum ada file dipilih.")
@@ -63,14 +53,11 @@ def show_account_page(app):
     btn_enc_run = ttk.Button(enc_frame, text="2. Amankan Dokumen", command=app.do_encrypt_file, style="Accent.TButton")
     btn_enc_run.pack(fill='x', pady=5)
     
-    # --- [ROMBAK] Mengganti ttk.LabelFrame dengan ttk.Frame + ttk.Label ---
     dec_frame = ttk.Frame(wrapper, style="CryptoPage.TFrame", padding=20)
     dec_frame.pack(fill='x', padx=10, pady=10)
     
-    # Ini adalah judul 'LabelFrame' yang baru
     ttk.Label(dec_frame, text="Buka Dokumen Aman", font=("Arial", 14, "bold"), style="Crypto.TLabel").pack(anchor='w', pady=(0, 10))
     
-    # Widget konten sekarang di-pack ke 'dec_frame'
     btn_dec_select = ttk.Button(dec_frame, text="1. Pilih Dokumen (.enc)...", command=app.select_file_to_decrypt)
     btn_dec_select.pack(fill='x', pady=5)
     app.decrypt_file_path_var = tk.StringVar(value="Belum ada file dipilih.")
@@ -78,21 +65,16 @@ def show_account_page(app):
     lbl_dec.pack(fill='x', pady=5)
     btn_dec_run = ttk.Button(dec_frame, text="2. Buka Dokumen", command=app.do_decrypt_file)
     btn_dec_run.pack(fill='x', pady=5)
-    # --- Akhir Rombak ---
 
 
 def show_reviews_page(app):
-    """Menggambar halaman TULIS Ulasan (Super Encrypt)."""
-    # Configure styles first
     style = ttk.Style(app.root)
     
-    # Configure modern frame style
     style.configure("CryptoPage.TFrame",
                    background="white",
                    relief="flat",
                    borderwidth=0)
     
-    # Configure Label styles
     style.configure("Crypto.TLabel",
                    background="white",
                    font=("Arial", 11))
@@ -104,17 +86,15 @@ def show_reviews_page(app):
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure columns for centering
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=2)  # Content column
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=2)
+    content.columnconfigure(2, weight=1)
     
     back_button = ttk.Button(content, text="< Kembali ke Beranda", command=app.show_products_page, style="Link.TButton")
     back_button.grid(row=0, column=1, sticky='w', padx=10, pady=(10,0))
     
     ttk.Label(content, text="Tulis Ulasan Produk (Mode Aman)", style="PageTitle.TLabel").grid(row=1, column=1, sticky='w', pady=(5, 20), padx=20)
     
-    # Modern style wrapper with shadow effect
     wrapper = ttk.Frame(content, style="CryptoPage.TFrame", padding=20)
     wrapper.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
     
@@ -137,17 +117,13 @@ def show_reviews_page(app):
 
 
 def show_view_review_page(app):
-    """Menggambar halaman LIHAT Ulasan (Super Decrypt)."""
-    # Configure styles first
     style = ttk.Style(app.root)
     
-    # Configure modern frame style
     style.configure("CryptoPage.TFrame",
                    background="white",
                    relief="flat",
                    borderwidth=0)
     
-    # Configure Label styles
     style.configure("Crypto.TLabel",
                    background="white",
                    font=("Arial", 11))
@@ -159,17 +135,15 @@ def show_view_review_page(app):
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure columns for centering
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=2)  # Content column
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=2)
+    content.columnconfigure(2, weight=1)
 
     back_button = ttk.Button(content, text="< Kembali ke Beranda", command=app.show_products_page, style="Link.TButton")
     back_button.grid(row=0, column=1, sticky='w', padx=10, pady=(10,0))
     
     ttk.Label(content, text="Lihat Ulasan (Mode Aman)", style="PageTitle.TLabel").grid(row=1, column=1, sticky='w', pady=(5, 20), padx=20)
     
-    # Modern style wrapper with shadow effect
     wrapper = ttk.Frame(content, style="CryptoPage.TFrame", padding=20)
     wrapper.grid(row=2, column=1, padx=20, pady=10, sticky='ew')
     
@@ -205,14 +179,12 @@ def show_view_review_page(app):
 
 
 def show_stegano_page(app, event=None):
-    """Menggambar halaman Steganografi."""
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure columns for centering
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=2)  # Content column
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=2)
+    content.columnconfigure(2, weight=1)
 
     back_button = ttk.Button(content, text="< Kembali ke Beranda", command=app.show_products_page, style="Link.TButton")
     back_button.grid(row=0, column=1, sticky='w', padx=10, pady=(10,0))
@@ -245,16 +217,12 @@ def show_stegano_page(app, event=None):
     app.steg_cover_path_var = tk.StringVar(value="Belum ada file dipilih.")
     app.steg_stego_path_var = tk.StringVar(value="Belum ada file dipilih.")
     
-    # Modern frame with subtle shadow effect
     hide_frame = ttk.Frame(wrapper, style="CryptoPage.TFrame", padding=20)
     hide_frame.pack(fill='x', padx=10, pady=10)
-    # Add shadow effect and rounded corners
     hide_frame.configure(relief="solid", borderwidth=1)
     
-    # Ini adalah judul 'LabelFrame' yang baru
     ttk.Label(hide_frame, text="Sisipkan Metadata", font=("Arial", 14, "bold"), style="Crypto.TLabel").pack(anchor='w', pady=(0, 10))
 
-    # Widget konten
     btn_cover = ttk.Button(hide_frame, text="1. Pilih Gambar Asli", command=app.select_cover_image)
     btn_cover.pack(fill='x', pady=5)
     cover_label = ttk.Label(hide_frame, textvariable=app.steg_cover_path_var, style="Crypto.TLabel")
@@ -265,16 +233,12 @@ def show_stegano_page(app, event=None):
     btn_hide = ttk.Button(hide_frame, text="3. Simpan Gambar", command=app.do_hide_stegano, style="Accent.TButton")
     btn_hide.pack(fill='x', pady=5)
     
-    # Modern frame with subtle shadow effect
     extract_frame = ttk.Frame(wrapper, style="CryptoPage.TFrame", padding=20)
     extract_frame.pack(fill='x', padx=10, pady=10)
-    # Add shadow effect and rounded corners
     extract_frame.configure(relief="solid", borderwidth=1)
     
-    # Ini adalah judul 'LabelFrame' yang baru
     ttk.Label(extract_frame, text="Ekstrak Metadata", font=("Arial", 14, "bold"), style="Crypto.TLabel").pack(anchor='w', pady=(0, 10))
 
-    # Widget konten
     btn_stego = ttk.Button(extract_frame, text="1. Pilih Gambar", command=app.select_stego_image)
     btn_stego.pack(fill='x', pady=5)
     stego_label = ttk.Label(extract_frame, textvariable=app.steg_stego_path_var, style="Crypto.TLabel")
@@ -284,4 +248,3 @@ def show_stegano_page(app, event=None):
     ttk.Label(extract_frame, text="Metadata Ditemukan:", style="Crypto.TLabel").pack(anchor='w', pady=(10, 0))
     app.steg_extracted_text = tk.Text(extract_frame, height=5, wrap='word', state='disabled', relief="solid", borderwidth=1, font=("Arial", 11))
     app.steg_extracted_text.pack(fill='x', pady=5)
-    # --- Akhir Rombak ---

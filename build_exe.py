@@ -1,13 +1,8 @@
-"""
-Build script for creating Cryptore executable using PyInstaller
-"""
 import PyInstaller.__main__
 import os
 
-# Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# PyInstaller configuration
 args = [
     'main.py',
     '--name=Cryptore',
@@ -28,7 +23,6 @@ args = [
     '--clean',
 ]
 
-# Add icon if it exists
 if os.path.exists('assets/images/logo.png'):
     args.insert(4, '--icon=assets/images/logo.png')
 

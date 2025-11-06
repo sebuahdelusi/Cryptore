@@ -9,7 +9,8 @@
 - [Persyaratan Sistem](#-persyaratan-sistem)
 - [Instalasi](#-instalasi)
 - [Cara Menggunakan](#-cara-menggunakan)
-- [Struktur Project](#-struktur-project)
+- [Fitur Tersembunyi (Easter Eggs)](#-fitur-tersembunyi-easter-eggs)
+- [Struktur Proyek](#-struktur-proyek)
 - [Build Executable](#-build-executable-exe)
 - [Catatan Keamanan](#-catatan-keamanan)
 
@@ -440,12 +441,6 @@ Extraction:
 - Klik "💬🔒 Chat Terenkripsi" untuk chat aman
 
 ## 📋 Persyaratan Sistem
-- Traditional username/password login
-- Windows Hello biometric authentication support (PIN, Fingerprint, Face Recognition)
-- Per-user Windows Hello configuration
-- Secure password hashing with salt
-
-## 📋 Persyaratan Sistem
 
 ### Hardware
 - **Processor:** Intel Core i3 atau AMD equivalent (minimum)
@@ -711,6 +706,83 @@ python generate_keys.py
 2. Pilih "🌙 Dark Mode" atau "☀️ Light Mode"
 3. Tema langsung berubah
 4. Preferensi tersimpan otomatis
+
+## 🎯 Fitur Tersembunyi (Easter Eggs)
+
+Cryptore memiliki beberapa fitur tersembunyi yang hanya bisa diakses dengan kombinasi tombol khusus!
+
+### 🔑 Cara Akses Fitur Tersembunyi
+
+**1. Debug Kriptografi (Shift + Click)**
+
+**Lokasi:** Halaman Utama → Klik Product Card
+- **Cara Akses:** Tahan tombol **Shift** + Klik pada tombol "Lihat Detail" produk
+- **Fungsi:** Membuka panel debug yang menampilkan:
+  - Log operasi kriptografi terkini
+  - Detail enkripsi/dekripsi yang dilakukan
+  - Hash plaintext dan ciphertext
+  - Timestamp setiap operasi crypto
+- **Untuk Apa:** Berguna untuk troubleshooting atau memahami proses enkripsi yang terjadi di balik layar
+
+**Contoh Penggunaan:**
+```
+1. Login ke aplikasi
+2. Buka halaman "🏪 Belanja"
+3. Tahan tombol Shift
+4. Sambil menahan Shift, klik "Lihat Detail" pada produk mana saja
+5. Panel debug akan muncul menampilkan aktivitas kriptografi
+```
+
+**2. Chat Terenkripsi User-to-User (Shift + Click)**
+
+**Lokasi:** Detail Produk → Tombol "Chat Penjual"
+- **Cara Akses:** Tahan tombol **Shift** + Klik pada tombol "💬 Chat Penjual"
+- **Fungsi:** Membuka **Encrypted Chat** (end-to-end encryption) alih-alih chat biasa
+- **Perbedaan:**
+  - **Chat Biasa:** Pesan tersimpan dalam bentuk plaintext
+  - **Encrypted Chat:** Pesan dienkripsi dengan Hill Cipher + Blowfish (Super Encryption)
+- **Untuk Apa:** Komunikasi yang benar-benar aman untuk transaksi sensitif
+
+**Contoh Penggunaan:**
+```
+1. Buka detail produk
+2. Tahan tombol Shift
+3. Sambil menahan Shift, klik "💬 Chat Penjual"
+4. Masukkan Verification Code (3 digit) dan Password
+5. Kirim pesan terenkripsi yang hanya bisa dibaca dengan kode yang sama
+```
+
+**3. Easter Egg Image (Shift + Click)**
+
+**Lokasi:** Halaman Steganografi → Label "Cryptore"
+- **Cara Akses:** Tahan tombol **Shift** + Klik pada label "Cryptore" di halaman Steganografi
+- **Fungsi:** Menampilkan gambar easter egg tersembunyi (ualmelet.png)
+- **Untuk Apa:** Fun feature, apresiasi untuk users yang eksplorasi aplikasi dengan teliti!
+
+**Contoh Penggunaan:**
+```
+1. Buka menu "🖼️ Sembunyikan Metadata"
+2. Tahan tombol Shift
+3. Sambil menahan Shift, klik pada label "Cryptore" di bagian header
+4. Gambar easter egg akan muncul sebagai surprise!
+```
+
+### 💡 Tips Menggunakan Shift + Click
+
+- **Tahan Shift terlebih dahulu**, baru klik (jangan dibalik)
+- Fitur ini bekerja pada **klik kiri** (left mouse button)
+- Tidak ada indikator visual bahwa fitur tersembunyi ada, jadi explore!
+- Shift + Click adalah **shortcut power user** untuk fitur advanced
+
+### 🎮 Kombinasi Keyboard Lainnya
+
+| Kombinasi | Fungsi | Lokasi |
+|-----------|---------|--------|
+| **Shift + Click** (Lihat Detail) | Debug Crypto Panel | Halaman Belanja |
+| **Shift + Click** (Chat Penjual) | Encrypted Chat Mode | Detail Produk |
+| **Shift + Click** (Label Cryptore) | Easter Egg Image | Halaman Steganografi |
+| **Enter** | Kirim Pesan | Chat Interface |
+| **Escape** | Tutup Zoom | Product Image Zoom |
 
 ## 📁 Struktur Proyek
 

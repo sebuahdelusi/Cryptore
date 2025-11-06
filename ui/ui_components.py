@@ -1,4 +1,3 @@
-# Simpan sebagai: ui/ui_components.py
 
 import tkinter as tk
 from tkinter import ttk
@@ -6,13 +5,11 @@ from tkinter import ttk
 COLOR_SECONDARY = "#F3F3F3"
 
 class CryptoKeyPopup(tk.Toplevel):
-    """Popup window for entering encryption/decryption keys."""
     def __init__(self, parent, title="Enter Keys", on_submit=None):
         super().__init__(parent)
         self.title(title)
         self.resizable(False, False)
         
-        # Center the window with larger dimensions
         window_width = 500
         window_height = 350
         screen_width = self.winfo_screenwidth()
@@ -20,9 +17,8 @@ class CryptoKeyPopup(tk.Toplevel):
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
         self.geometry(f"{window_width}x{window_height}+{x}+{y}")
-        self.minsize(500, 350)  # Set minimum size to prevent shrinking
+        self.minsize(500, 350)
         
-        # Create and pack widgets with improved styling
         frame = ttk.Frame(self, padding="20", style="Product.TFrame")
         frame.pack(fill=tk.BOTH, expand=True)
         
@@ -34,7 +30,6 @@ class CryptoKeyPopup(tk.Toplevel):
         self.bf_key = ttk.Entry(frame, show="*", width=40, font=("Arial", 12))
         self.bf_key.pack(fill=tk.X, pady=(0, 15), ipady=5)
         
-        # Submit button
         button_frame = ttk.Frame(frame, style="Product.TFrame")
         button_frame.pack(fill=tk.X, pady=20, padx=50)
         
@@ -50,13 +45,11 @@ class CryptoKeyPopup(tk.Toplevel):
                              borderwidth=1)
         submit_btn.pack(fill=tk.X)
         
-        # Bind hover effects
         submit_btn.bind("<Enter>", lambda e: submit_btn.configure(bg="#006ac1"))
         submit_btn.bind("<Leave>", lambda e: submit_btn.configure(bg="#0078D4"))
         
         self.on_submit_callback = on_submit
         
-        # Make window modal
         self.transient(parent)
         self.grab_set()
         self.hill_key.focus_set()
@@ -67,27 +60,21 @@ class CryptoKeyPopup(tk.Toplevel):
         self.destroy()
 
 class ScrollableFrame(ttk.Frame):
-    """Frame yang bisa di-scroll secara vertikal."""
     def __init__(self, container, bg_color=None, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         
-        # Configure container to expand
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         
-        # Use provided bg_color or fallback to global constant
         canvas_bg = bg_color if bg_color else COLOR_SECONDARY
         canvas = tk.Canvas(self, bg=canvas_bg, highlightthickness=0)
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
         
-        # Create outer frame for centering
         outer_frame = ttk.Frame(canvas, style="ContentWrapper.TFrame")
-        # Center frame configuration
-        outer_frame.columnconfigure(0, weight=1)  # Left margin
-        outer_frame.columnconfigure(1, weight=2)  # Content area
-        outer_frame.columnconfigure(2, weight=1)  # Right margin
+        outer_frame.columnconfigure(0, weight=1)
+        outer_frame.columnconfigure(1, weight=2)
+        outer_frame.columnconfigure(2, weight=1)
         
-        # Create the actual scrollable frame in the center column
         self.scrollable_frame = ttk.Frame(outer_frame, style="TFrame")
         self.scrollable_frame.grid(row=0, column=1, sticky='nsew', padx=20)
         
@@ -99,9 +86,9 @@ class ScrollableFrame(ttk.Frame):
             if hasattr(event, 'delta') and event.delta != 0:
                 delta = event.delta
             elif event.num == 5:
-                delta = -120 # Scroll ke bawah
+                delta = -120
             elif event.num == 4:
-                delta = 120 # Scroll ke atas
+                delta = 120
             
             if delta != 0:
                 canvas.yview_scroll(int(-1*(delta/120)), "units")
@@ -113,15 +100,12 @@ class ScrollableFrame(ttk.Frame):
         canvas.create_window((0, 0), window=outer_frame, anchor="nw", width=canvas.winfo_width())
         canvas.configure(yscrollcommand=scrollbar.set)
         
-        # Configure canvas and scrollbar
         canvas.grid(row=0, column=0, sticky='nsew')
         scrollbar.grid(row=0, column=1, sticky='ns')
         
-        # Make canvas expand to fill frame
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         
-        # Update canvas width when window resizes
         def on_configure(event):
             canvas.itemconfig(canvas.find_withtag('all')[0], width=event.width)
             

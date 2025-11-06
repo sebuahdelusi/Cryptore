@@ -1,4 +1,3 @@
-# Simpan sebagai: modules/crypto_super_encrypt.py
 
 import numpy as np
 import hashlib
@@ -7,12 +6,8 @@ from Crypto.Cipher import Blowfish
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 
-# =====================================================================
-# [BARU] FUNGSI HILL CIPHER DIGABUNGKAN KE SINI
-# =====================================================================
 
 def _mod_inverse(a, m):
-    """Internal: Mencari invers modular dari a mod m"""
     m0, x0, x1 = m, 0, 1
     if m == 1: return 0
     while a > 1:
@@ -23,7 +18,6 @@ def _mod_inverse(a, m):
     return x1
 
 def _get_key_matrix_inverse(key_matrix):
-    """Internal: Menghitung invers modular matriks (K^-1) untuk Hill Cipher 2x2."""
     det = np.linalg.det(key_matrix)
     det_int = int(np.round(det)) % 26
     det_inv = _mod_inverse(det_int, 26)
@@ -35,10 +29,6 @@ def _get_key_matrix_inverse(key_matrix):
     return inv_key_matrix
 
 def create_key_matrix(key):
-    """
-    (Publik) Mengubah string kunci (4 huruf) menjadi matriks kunci numpy 2x2.
-    Fungsi ini diekspos untuk validasi di UI.
-    """
     cleaned_key = "".join(filter(str.isalpha, key)).upper()
     if len(cleaned_key) < 4:
         raise ValueError("Kunci Hill Cipher (2x2) harus terdiri dari 4 huruf.")
@@ -53,7 +43,6 @@ def create_key_matrix(key):
     return key_matrix
 
 def _hill_encrypt(plaintext, key_matrix):
-    """Internal: Menenkripsi plaintext menggunakan Hill Cipher 2x2."""
     encrypted_text = ""
     cleaned_text = "".join(filter(str.isalpha, plaintext)).upper()
     
@@ -69,7 +58,6 @@ def _hill_encrypt(plaintext, key_matrix):
     return encrypted_text
 
 def _hill_decrypt(ciphertext, key_matrix):
-    """Internal: Mendekripsi ciphertext menggunakan Hill Cipher 2x2."""
     decrypted_text = ""
     inv_key_matrix = _get_key_matrix_inverse(key_matrix)
     cleaned_text = "".join(filter(str.isalpha, ciphertext)).upper()
@@ -85,9 +73,6 @@ def _hill_decrypt(ciphertext, key_matrix):
         
     return decrypted_text
 
-# =====================================================================
-# FUNGSI BLOWFISH & SUPER ENKRIPSI
-# =====================================================================
 
 def _get_blowfish_key_bytes(key_str):
     return hashlib.sha256(key_str.encode('utf-8')).digest()
@@ -104,10 +89,8 @@ def _blowfish_decrypt(ciphertext_bytes, iv, key_bytes):
     decrypted_bytes = unpad(cipher.decrypt(ciphertext_bytes), Blowfish.block_size)
     return decrypted_bytes.decode('utf-8')
 
-# --- FUNGSI UTAMA (PUBLIK) ---
 
 def super_encrypt(plaintext, hill_key_str, blowfish_key_str):
-    """Melakukan Super Enkripsi: Hill Cipher -> Blowfish -> Base64"""
     try:
         matriks_kunci_hill = create_key_matrix(hill_key_str)
         text_after_hill = _hill_encrypt(plaintext, matriks_kunci_hill)
@@ -123,7 +106,6 @@ def super_encrypt(plaintext, hill_key_str, blowfish_key_str):
         return None
 
 def super_decrypt(ciphertext_gabungan, hill_key_str, blowfish_key_str):
-    """Melakukan Super Dekripsi: Base64 -> Blowfish -> Hill Cipher"""
     try:
         iv_b64, cipher_b64 = ciphertext_gabungan.split(':')
         iv = base64.b64decode(iv_b64)

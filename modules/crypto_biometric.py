@@ -1,4 +1,3 @@
-# Simpan sebagai: modules/crypto_biometric.py
 
 import sys
 import subprocess
@@ -9,10 +8,8 @@ from winrt.windows.security.credentials.ui import (
     UserConsentVerificationResult
 )
 
-# --- Bagian yang akan dijalankan oleh Helper Process ---
 
 async def _check_availability_async():
-    """Pemeriksaan ketersediaan Windows Hello (Async)."""
     try:
         availability = await UserConsentVerifier.check_availability_async()
         if availability == UserConsentVerifierAvailability.AVAILABLE:
@@ -25,7 +22,6 @@ async def _check_availability_async():
         return "ERROR"
 
 async def _request_verification_async(message):
-    """Meminta verifikasi Windows Hello (Async)."""
     try:
         consent_result = await UserConsentVerifier.request_verification_async(message)
         if consent_result == UserConsentVerificationResult.VERIFIED:
@@ -38,38 +34,30 @@ async def _request_verification_async(message):
         return "ERROR"
 
 def _hello_helper_main(flag, message=None):
-    """
-    Fungsi utama yang dijalankan oleh helper process.
-    Hanya menjalankan satu tugas async dan keluar.
-    """
     if flag == "--hello-available":
         result = asyncio.run(_check_availability_async())
         if result == "AVAILABLE":
-            sys.exit(0) # Sukses
+            sys.exit(0)
         elif result == "NOT_CONFIGURED":
-            sys.exit(1) # Gagal (Tidak dikonfigurasi)
+            sys.exit(1)
         else:
-            sys.exit(2) # Gagal (Lainnya)
+            sys.exit(2)
             
     elif flag == "--hello-verify":
         static_message = "Konfirmasi identitas Anda untuk Cryptore"
         result = asyncio.run(_request_verification_async(static_message))
         
         if result == "VERIFIED":
-            sys.exit(0) # Sukses
+            sys.exit(0)
         elif result == "CANCELED":
-            sys.exit(1) # Dibatalkan
+            sys.exit(1)
         else:
-            sys.exit(2) # Gagal
+            sys.exit(2)
     
-    sys.exit(99) # Flag tidak dikenal
+    sys.exit(99)
 
-# --- Bagian yang akan dijalankan oleh Aplikasi Utama (Main.py) ---
 
 def _run_helper_process(flag, message=None):
-    """
-    Menjalankan helper process (script ini sendiri) dengan flag tertentu.
-    """
     command = [sys.executable, __file__, flag]
     
     try:
@@ -84,10 +72,6 @@ def _run_helper_process(flag, message=None):
         return -1
 
 def check_biometric_availability():
-    """
-    (Publik) Memeriksa ketersediaan Windows Hello dari aplikasi utama.
-    Mengembalikan tuple (is_available, status_message)
-    """
     return_code = _run_helper_process("--hello-available")
     
     if return_code == 0:
@@ -100,15 +84,9 @@ def check_biometric_availability():
         return (False, f"Error saat memeriksa biometrik (code: {return_code}).")
 
 def verify_biometric_with_prompt():
-    """
-    (Publik) Menampilkan prompt Windows Hello dan menunggu hasil.
-    Mengembalikan True jika berhasil, False jika gagal atau dibatalkan.
-    """
     return_code = _run_helper_process("--hello-verify")
     return return_code == 0
 
-# --- Entry Point untuk Helper Process ---
 if __name__ == "__main__":
-    # Jika script ini dijalankan langsung dengan flag, masuk ke mode helper
     if len(sys.argv) > 1 and sys.argv[1] in ["--hello-available", "--hello-verify"]:
         _hello_helper_main(sys.argv[1])

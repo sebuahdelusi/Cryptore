@@ -1,3 +1,40 @@
 {
-  "operations": []
+  "operations": [
+    {
+      "timestamp": "2025-11-05 11:21:13",
+      "operation": "rsa_file_encrypt",
+      "parameters": {
+        "input_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log",
+        "output_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log.enc",
+        "mode": "AES-GCM+RSA",
+        "session_key": "a7ad1be52810241c4da127f53604b802",
+        "aes_nonce": "6ed9ddb3168880d1f2de033c70cda6e4",
+        "aes_tag": "a6fe1711801edfee62c94eea8c7c0391"
+      }
+    },
+    {
+      "timestamp": "2025-11-05 11:21:13",
+      "operation": "rsa_file_encrypt",
+      "parameters": {
+        "input_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log",
+        "output_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log.enc",
+        "mode": "AES-GCM+RSA",
+        "session_key": "a7ad1be52810241c4da127f53604b802",
+        "aes_nonce": "6ed9ddb3168880d1f2de033c70cda6e4",
+        "aes_tag": "a6fe1711801edfee62c94eea8c7c0391"
+      }
+    },
+    {
+      "timestamp": "2025-11-05 11:21:23",
+      "operation": "rsa_file_decrypt",
+      "parameters": {
+        "input_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log.enc",
+        "output_file": "C:/Users/JOY/Downloads/Nathan_Nazares.log",
+        "mode": "AES-GCM+RSA",
+        "session_key": "a7ad1be52810241c4da127f53604b802",
+        "aes_nonce": "6ed9ddb3168880d1f2de033c70cda6e4",
+        "aes_tag": "a6fe1711801edfee62c94eea8c7c0391"
+      }
+    }
+  ]
 }

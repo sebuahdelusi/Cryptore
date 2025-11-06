@@ -1,4 +1,3 @@
-# Simpan sebagai: ui/ui_main_pages.py
 
 import tkinter as tk
 from tkinter import ttk
@@ -8,29 +7,23 @@ import os
 from ui.ui_chat_page import show_seller_chat, show_encrypted_chat
 
 def show_products_page(app):
-    """Menggambar halaman daftar produk."""
     app.clear_content_frame()
     content = app.content_area.scrollable_frame 
     
-    # Configure grid for modern layout with wider content area
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=4)  # Content area (wider)
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=4)
+    content.columnconfigure(2, weight=1)
     
-    # Modern header section
     header_frame = ttk.Frame(content, style="ContentWrapper.TFrame")
     header_frame.grid(row=0, column=1, sticky='ew', pady=(30,20), padx=20)
     
     ttk.Label(header_frame, text="Produk Pilihan", style="PageTitle.TLabel").pack(side='left')
     
-    # Create modern product grid frame with better spacing
     product_grid_frame = ttk.Frame(content, style="ContentWrapper.TFrame")
     product_grid_frame.grid(row=1, column=1, pady=(0,40), padx=40)
     
-    # Configure grid for 3 columns with equal spacing
     for i in range(3):
         product_grid_frame.columnconfigure(i, weight=1, uniform='column')
-    # --- ---------------------------------------------------- ---
     
     products = [
             {
@@ -256,7 +249,6 @@ Kondisi:
             },
     ]
     
-    # Add spacing between grid cells
     for i in range(3):
         product_grid_frame.columnconfigure(i, weight=1, uniform='column', minsize=340)
         
@@ -267,21 +259,16 @@ Kondisi:
         col += 1
         if col > 2: col = 0; row += 1
         
-    # Configure row weights for equal spacing
-    for i in range((len(products) + 2) // 3):  # Calculate needed rows
+    for i in range((len(products) + 2) // 3):
         product_grid_frame.rowconfigure(i, weight=1)
 
 def _create_product_card(app, parent, product):
-    """Helper internal untuk membuat satu kartu produk."""
-    # Create fixed-size container with padding for hover effect
     outer_frame = ttk.Frame(parent, style="Product.TFrame")
-    outer_frame.grid_propagate(False)  # Maintain fixed size
+    outer_frame.grid_propagate(False)
     outer_frame.pack_propagate(False)
     
-    # Set fixed size for consistent layout
     outer_frame.configure(width=320, height=400)
     
-    # Inner frame for content with margin for hover effect
     prod_frame = ttk.Frame(outer_frame, style="Product.TFrame")
     prod_frame.pack(fill='both', expand=True, padx=2, pady=2)
     
@@ -289,7 +276,6 @@ def _create_product_card(app, parent, product):
         img_key = product["image"] 
         if img_key not in app.image_cache:
             img_path = os.path.join(app.IMAGE_PATH, product["image"])
-            # Larger images for better quality
             img = Image.open(img_path).resize((300, 240), Image.LANCZOS) 
             app.image_cache[img_key] = ImageTk.PhotoImage(img)
         
@@ -300,27 +286,21 @@ def _create_product_card(app, parent, product):
         img_label = ttk.Label(prod_frame, text=f"[Gambar tidak tersedia]", padding=40, style="Product.TLabel")
         img_label.pack(pady=20, padx=20)
     
-    # Modern content layout with better spacing
     content_frame = ttk.Frame(prod_frame, style="Product.TFrame", padding=(20, 15))
     content_frame.pack(fill='x')
 
-    # Product name with larger font
     name_label = ttk.Label(content_frame, text=product["name"], style="ProductTitle.TLabel")
     name_label.pack(anchor='w')
 
-    # Price with accent color
     price_label = ttk.Label(content_frame, text=product["price"], style="ProductPrice.TLabel")
     price_label.pack(anchor='w', pady=(5, 15))
 
-    # Modern button with hover effect
     button_frame = ttk.Frame(content_frame, style="Product.TFrame")
     button_frame.pack(fill='x')
     
-    # Theme-aware button colors
     detail_btn_bg = "#3A3A3A" if app.is_dark_mode else "#f8f9fa"
     detail_btn_hover = "#4A4A4A" if app.is_dark_mode else "#e9ecef"
     
-    # Use tk Button for hover effect
     detail_button = tk.Button(
         button_frame, 
         text="Lihat Detail",
@@ -339,7 +319,6 @@ def _create_product_card(app, parent, product):
         cursor="hand2"
     )
     
-    # Add hover effect
     def on_enter(e):
         detail_button['bg'] = detail_btn_hover
     def on_leave(e):
@@ -355,7 +334,6 @@ def _create_product_card(app, parent, product):
     if product["trigger"]:
         img_label.config(cursor="hand2")
     
-    # Bind hover events with theme-aware colors
     def on_enter(e):
         prod_frame.configure(relief="solid", borderwidth=2)
         detail_button.configure(
@@ -370,7 +348,6 @@ def _create_product_card(app, parent, product):
             fg=app.COLOR_TEXT
         )
     
-    # Bind events to all elements for consistent hover effect
     for widget in [outer_frame, prod_frame, content_frame, button_frame, detail_button]:
         widget.bind('<Enter>', on_enter)
         widget.bind('<Leave>', on_leave)
@@ -378,16 +355,13 @@ def _create_product_card(app, parent, product):
     return outer_frame
 
 def show_product_detail_page(app, product):
-    """Menggambar halaman detail produk (decoy)."""
     app.clear_content_frame()
     content = app.content_area.scrollable_frame
     
-    # Configure grid for centering
-    content.columnconfigure(0, weight=1)  # Left margin
-    content.columnconfigure(1, weight=2)  # Content area
-    content.columnconfigure(2, weight=1)  # Right margin
+    content.columnconfigure(0, weight=1)
+    content.columnconfigure(1, weight=2)
+    content.columnconfigure(2, weight=1)
     
-    # Navigation and breadcrumb
     nav_frame = ttk.Frame(content, style="ContentWrapper.TFrame")
     nav_frame.grid(row=0, column=1, sticky='ew', padx=20, pady=(20,0))
     
@@ -395,17 +369,15 @@ def show_product_detail_page(app, product):
                             command=app.show_products_page, style="Link.TButton")
     back_button.pack(side='left')
     
-    # Modern main frame with shadow effect
     main_frame = ttk.Frame(content, style="CryptoPage.TFrame", padding=30)
     main_frame.grid(row=1, column=1, sticky='nsew', padx=20, pady=20)
 
-    # Left side - Image and thumbnails
     left_frame = ttk.Frame(main_frame, style="Product.TFrame")
     left_frame.pack(side="left", padx=20, fill="y", anchor="n")
     
     try:
         img_path = os.path.join(app.IMAGE_PATH, product["image"])
-        img = Image.open(img_path).resize((400, 400), Image.LANCZOS)  # Larger image
+        img = Image.open(img_path).resize((400, 400), Image.LANCZOS)
         img_key = product["image"] + "_large"
         
         if img_key not in app.image_cache:
@@ -414,88 +386,68 @@ def show_product_detail_page(app, product):
         img_label = ttk.Label(left_frame, image=app.image_cache[img_key], cursor="hand2")
         img_label.pack(pady=20, padx=20)
         
-        # Add zoom hint
         ttk.Label(left_frame, text="🔍 Klik untuk memperbesar", 
                  font=("Arial", 10), foreground="#666666").pack(pady=(0,20))
         
-        # Create zoom functionality
         def show_zoomed_image(event):
-            # Create popup window
             popup = tk.Toplevel(app.root)
             popup.title(product["name"])
             popup.configure(bg=app.COLOR_SECONDARY)
             
-            # Calculate window size (90% of screen size for larger viewing area)
             screen_width = app.root.winfo_screenwidth()
             screen_height = app.root.winfo_screenheight()
             window_width = int(screen_width * 0.9)
             window_height = int(screen_height * 0.9)
             
-            # Center the window
             x = (screen_width - window_width) // 2
             y = (screen_height - window_height) // 2
             popup.geometry(f"{window_width}x{window_height}+{x}+{y}")
             
-            # Create a frame with minimal padding to maximize image space
             frame = ttk.Frame(popup, style="CryptoPage.TFrame", padding=10)
             frame.pack(expand=True, fill='both', padx=10, pady=10)
             
             try:
-                # Load larger version of image
                 large_img = Image.open(img_path)
-                # Calculate aspect ratio
                 aspect_ratio = large_img.width / large_img.height
                 
-                # Calculate new dimensions maintaining aspect ratio
-                # Ensure minimum size is at least 800px wide or tall
                 min_dimension = 800
                 
                 if aspect_ratio > 1:
-                    # Landscape image
                     new_width = min(max(min_dimension, large_img.width), window_width - 100)
                     new_height = int(new_width / aspect_ratio)
                     
-                    # If height becomes too large, recalculate based on height
                     if new_height > window_height - 100:
                         new_height = window_height - 100
                         new_width = int(new_height * aspect_ratio)
                 else:
-                    # Portrait image
                     new_height = min(max(min_dimension, large_img.height), window_height - 100)
                     new_width = int(new_height * aspect_ratio)
                     
-                    # If width becomes too large, recalculate based on width
                     if new_width > window_width - 100:
                         new_width = window_width - 100
                         new_height = int(new_width / aspect_ratio)
                 
-                # Ensure dimensions are at least 800x800 if possible within screen constraints
                 if new_width < min_dimension and new_height < min_dimension:
                     scale = min_dimension / max(new_width, new_height)
                     new_width = int(new_width * scale)
                     new_height = int(new_height * scale)
                 
-                # Resize image with high-quality resampling
                 large_img = large_img.resize((new_width, new_height), Image.LANCZOS)
                 img_key_zoomed = product["image"] + "_zoomed"
                 
                 if img_key_zoomed not in app.image_cache:
                     app.image_cache[img_key_zoomed] = ImageTk.PhotoImage(large_img)
                 
-                # Display image
                 img_label_zoomed = ttk.Label(frame, image=app.image_cache[img_key_zoomed])
                 img_label_zoomed.pack(expand=True, fill='both')
                 
-                # Close button
                 close_btn = ttk.Button(frame, text="Tutup", 
                                      command=popup.destroy, 
                                      style="Accent.TButton")
                 close_btn.pack(pady=(20,0))
                 
-                # Bind Escape key to close
                 popup.bind('<Escape>', lambda e: popup.destroy())
                 
-                # Make the popup modal
                 popup.transient(app.root)
                 popup.grab_set()
                 
@@ -503,17 +455,14 @@ def show_product_detail_page(app, product):
                 popup.destroy()
                 tk.messagebox.showerror("Error", f"Gagal membuka gambar: {str(e)}")
         
-        # Bind click event to image label
         img_label.bind('<Button-1>', show_zoomed_image)
     except Exception:
         img_label = ttk.Label(left_frame, text=f"[Gambar tidak tersedia]", padding=40)
         img_label.pack(pady=20, padx=20)
         
-    # Right side - Product information
     right_frame = ttk.Frame(main_frame)
     right_frame.pack(side="right", fill="both", expand=True, padx=20)
     
-    # Product title and price
     title_frame = ttk.Frame(right_frame)
     title_frame.pack(fill='x', pady=(10, 20))
     
@@ -526,11 +475,9 @@ def show_product_detail_page(app, product):
     ttk.Label(price_frame, text=product["price"], 
              font=("Arial", 24), foreground=app.COLOR_PRIMARY).pack(side='left')
              
-    # Stock indicator (you can make this dynamic)
     ttk.Label(price_frame, text="✓ Stok Tersedia", 
              font=("Arial", 12), foreground="#28a745").pack(side='right')
     
-    # Action buttons
     button_frame = ttk.Frame(right_frame)
     button_frame.pack(fill='x', pady=20)
     
@@ -543,14 +490,11 @@ def show_product_detail_page(app, product):
     
     def on_chat_click(event):
         is_shift_pressed = (event.state & 0x0001) != 0
-        # Store current product for navigation
         app.current_product = product
         
         if is_shift_pressed:
-            # Show encrypted user-to-user chat
             show_encrypted_chat(app)
         else:
-            # Show normal seller chat
             show_seller_chat(app, product)
     
     chat_button.bind('<Button-1>', on_chat_click)
@@ -562,11 +506,9 @@ def show_product_detail_page(app, product):
                    style="TButton"
                   ).pack(fill='x', ipady=5, pady=5)
     
-    # Product information tabs
     info_frame = ttk.LabelFrame(right_frame, text="Informasi Produk", style="Crypto.TLabelframe")
     info_frame.pack(fill='both', expand=True, pady=(20,0))
     
-    # Description section
     desc_frame = ttk.Frame(info_frame)
     desc_frame.pack(fill='both', expand=True, padx=15, pady=15)
     
@@ -577,11 +519,9 @@ def show_product_detail_page(app, product):
     desc_text.config(state="disabled")
     desc_text.pack(fill="both", expand=True)
     
-    # Additional information
     additional_frame = ttk.Frame(right_frame)
     additional_frame.pack(fill='x', pady=20)
     
-    # Shipping information
     ship_frame = ttk.LabelFrame(additional_frame, text="Informasi Pengiriman", style="Crypto.TLabelframe")
     ship_frame.pack(fill='x', pady=(0,10))
     
@@ -591,7 +531,6 @@ def show_product_detail_page(app, product):
     ttk.Label(ship_content, text="✈️ Pengiriman dari Jakarta Pusat", font=("Arial", 11)).pack(anchor='w')
     ttk.Label(ship_content, text="🚚 Estimasi 2-3 hari pengiriman", font=("Arial", 11)).pack(anchor='w', pady=5)
     
-    # Payment methods
     payment_frame = ttk.LabelFrame(additional_frame, text="Metode Pembayaran", style="Crypto.TLabelframe")
     payment_frame.pack(fill='x')
     
