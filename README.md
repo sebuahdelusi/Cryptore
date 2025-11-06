@@ -1,5 +1,8 @@
 # Cryptore - Secure Cryptographic E-commerce Application
 
+> **📥 Ingin langsung download aplikasi?** Kunjungi halaman **[Releases](https://github.com/sebuahdelusi/Cryptore/releases)** untuk download executable siap pakai.  
+> Dokumentasi lengkap ada di bawah.
+
 **Cryptore** adalah aplikasi e-commerce yang mengimplementasikan berbagai teknik kriptografi untuk keamanan pesan, enkripsi file, dan steganografi. Dibangun dengan Python dan Tkinter, aplikasi ini menyediakan antarmuka yang user-friendly dengan fitur keamanan yang robust.
 
 ## 📖 Daftar Isi
