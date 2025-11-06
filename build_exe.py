@@ -3,11 +3,14 @@ import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
+icon_path = 'assets/images/icon.ico'
+
 args = [
     'main.py',
     '--name=Cryptore',
     '--onefile',
     '--windowed',
+    f'--icon={icon_path}',
     '--add-data=assets;assets',
     '--add-data=data;data',
     '--add-data=modules;modules',
@@ -22,9 +25,6 @@ args = [
     '--noconsole',
     '--clean',
 ]
-
-if os.path.exists('assets/images/logo.png'):
-    args.insert(4, '--icon=assets/images/logo.png')
 
 PyInstaller.__main__.run(args)
 

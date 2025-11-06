@@ -43,6 +43,13 @@ class DecoyEStoreApp:
         self.root.title("Cryptore - Secure Application")
         self.root.geometry("1200x800")
         
+        try:
+            icon_path = os.path.join(IMAGE_PATH, "icon.ico")
+            if os.path.exists(icon_path):
+                self.root.iconbitmap(icon_path)
+        except Exception as e:
+            print(f"Could not load icon: {e}")
+        
         self.is_dark_mode = False
         self.load_theme_preference()
         self.apply_theme()
