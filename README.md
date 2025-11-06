@@ -1,507 +1,243 @@
-------
+# Cryptore - Secure Cryptographic E-commerce Application
 
-
-
-👥 Tim Pengembang
-
-
-
-**Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**  **Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**  
-
-**Mata Kuliah:** Kriptografi - Semester 5**Mata Kuliah:** Kriptografi - Semester 5
-
-
-
-- **Gorbi Ello Pasaribu** - 123230083 - IF-H- **Gorbi Ello Pasaribu** - 123230083 - IF-H
-
-- **Athallah Joyoningrat** - 123230230 - IF-H- **Athallah Joyoningrat** - 123230230 - IF-H
-
-
-
-------
-
-
-
-# Cryptore - Secure Cryptographic E-commerce Application# Cryptore - Secure Cryptographic E-commerce Application
-
-
-
-> **📥 Download aplikasi:** [Releases](https://github.com/sebuahdelusi/Cryptore/releases)> **📥 Ingin langsung download aplikasi?** Kunjungi halaman **[Releases](https://github.com/sebuahdelusi/Cryptore/releases)** untuk download executable siap pakai.  
-
+> **📥 Ingin langsung download aplikasi?** Kunjungi halaman **[Releases](https://github.com/sebuahdelusi/Cryptore/releases)** untuk download executable siap pakai.  
 > Dokumentasi lengkap ada di bawah.
-
-Aplikasi e-commerce yang mengimplementasikan berbagai teknik kriptografi untuk keamanan pesan, enkripsi file, dan steganografi.
 
 **Cryptore** adalah aplikasi e-commerce yang mengimplementasikan berbagai teknik kriptografi untuk keamanan pesan, enkripsi file, dan steganografi. Dibangun dengan Python dan Tkinter, aplikasi ini menyediakan antarmuka yang user-friendly dengan fitur keamanan yang robust.
 
 ## 📖 Daftar Isi
-
-- [Teknologi Kriptografi](#-teknologi-kriptografi)## 📖 Daftar Isi
-
-- [Fitur Utama](#-fitur-utama)- [Tentang Cryptore](#-tentang-cryptore)
-
-- [Instalasi & Penggunaan](#-instalasi--penggunaan)- [Teknologi Kriptografi](#-teknologi-kriptografi-yang-digunakan)
-
-- [Fitur Tersembunyi](#-fitur-tersembunyi-easter-eggs)- [Fitur Lengkap](#-fitur-lengkap)
-
-- [Struktur Proyek](#-struktur-proyek)- [Persyaratan Sistem](#-persyaratan-sistem)
-
-- [Keamanan](#-keamanan)- [Instalasi](#-instalasi)
-
+- [Tentang Cryptore](#-tentang-cryptore)
+- [Teknologi Kriptografi](#-teknologi-kriptografi-yang-digunakan)
+- [Fitur Lengkap](#-fitur-lengkap)
+- [Persyaratan Sistem](#-persyaratan-sistem)
+- [Instalasi](#-instalasi)
 - [Cara Menggunakan](#-cara-menggunakan)
-
-## 🔐 Teknologi Kriptografi- [Fitur Tersembunyi (Easter Eggs)](#-fitur-tersembunyi-easter-eggs)
-
+- [Fitur Tersembunyi (Easter Eggs)](#-fitur-tersembunyi-easter-eggs)
 - [Struktur Proyek](#-struktur-proyek)
+- [Build Executable](#-build-executable-exe)
+- [Catatan Keamanan](#-catatan-keamanan)
 
-### 1. Hill Cipher (Klasik)- [Build Executable](#-build-executable-exe)
+## 🔐 Tentang Cryptore
 
-- Cipher substitusi poligrafik berbasis aljabar linear matriks 3x3- [Catatan Keamanan](#-catatan-keamanan)
+Cryptore adalah aplikasi keamanan komprehensif yang menggabungkan berbagai algoritma kriptografi klasik dan modern untuk melindungi data pengguna. Aplikasi ini dikembangkan sebagai studi kasus implementasi kriptografi dalam skenario e-commerce yang aman.
 
-- Digunakan sebagai lapisan pertama super encryption
-
-- Resistant terhadap frequency analysis## 🔐 Tentang Cryptore
-
-
-
-### 2. Blowfish (Modern)Cryptore adalah aplikasi keamanan komprehensif yang menggabungkan berbagai algoritma kriptografi klasik dan modern untuk melindungi data pengguna. Aplikasi ini dikembangkan sebagai studi kasus implementasi kriptografi dalam skenario e-commerce yang aman.
-
-- Symmetric-key block cipher (64-bit block, 32-448 bit key)
-
-- Mode CBC dengan 16 putaran Feistel network## � Teknologi Kriptografi yang Digunakan
-
-- Lapisan kedua super encryption untuk keamanan maksimal
+## � Teknologi Kriptografi yang Digunakan
 
 ### 1. **Hill Cipher (Kriptografi Klasik)**
-
-### 3. RSA 2048-bit (Asimetris)**Lokasi Implementasi:** `modules/crypto_super_encrypt.py`
-
-- Public-key cryptography dengan OAEP padding
-
-- Enkripsi/dekripsi file dengan key pair (public + private)**Deskripsi:**
-
-- Implementasi: `assets/keys/*.pem`- Algoritma cipher klasik berbasis aljabar linear
-
-- Menggunakan matriks kunci untuk enkripsi/dekripsi
-
-### 4. LSB Steganography- Merupakan cipher substitusi poligrafik yang beroperasi pada blok plaintext
-
-- Sembunyikan pesan dalam gambar (PNG/JPG/BMP)
-
-- Least Significant Bit replacement pada pixel RGB**Cara Kerja:**
-
-- Tidak terlihat mata manusia, dapat dikombinasi dengan enkripsi1. Plaintext dikonversi menjadi vektor numerik (A=0, B=1, ..., Z=25)
-
-2. Vektor dikalikan dengan matriks kunci menggunakan modulo 26
-
-### 5. Super Encryption (Hybrid)3. Hasil perkalian dikonversi kembali menjadi ciphertext
-
-- Kombinasi Hill Cipher + Blowfish secara cascade
-
-- Defense in depth: dua lapisan algoritma independen**Implementasi di Cryptore:**
-
-- Digunakan untuk chat terenkripsi dan reviews- Digunakan sebagai lapisan enkripsi pertama pada sistem chat terenkripsi
-
-- Matriks kunci dibangkitkan dari verification code yang dimasukkan user
-
-### 6. Password Hashing- Ukuran matriks: 3x3 untuk blok plaintext 3 karakter
-
-- SHA-256 dengan salt unik per user
-
-- Mencegah rainbow table attacks**Kelebihan:**
-
-- Password tidak pernah disimpan plaintext- Resistant terhadap frequency analysis sederhana
-
-- Enkripsi blok meningkatkan keamanan
-
-### 7. Windows Hello Biometric
-
-- Integrasi API Windows Hello (PIN/Fingerprint/Face)**Kelemahan:**
-
-- Credential storage via Windows Credential Manager- Vulnerable terhadap known-plaintext attack
-
-- Biometric data dikelola sistem, bukan aplikasi- Memerlukan matriks yang invertible
-
-
-
-## 🚀 Fitur Utama### 2. **Blowfish (Kriptografi Modern)**
-
 **Lokasi Implementasi:** `modules/crypto_super_encrypt.py`
 
-### 🔑 Autentikasi
-
-- **Login/Register** dengan password hashing (SHA-256 + salt)**Deskripsi:**
-
-- **Windows Hello** untuk login biometric (PIN/Face/Fingerprint)- Symmetric-key block cipher yang dikembangkan oleh Bruce Schneier
-
-- Data user tersimpan aman di `data/users.json`- Ukuran blok: 64-bit
-
-- Panjang kunci: variable (32-448 bits)
-
-### 💬 Chat Terenkripsi- Menggunakan struktur Feistel network dengan 16 putaran
-
-- **Super Encryption** (Hill Cipher + Blowfish) untuk end-to-end encryption
-
-- **Chat Penjual** tanpa enkripsi untuk komunikasi biasa**Cara Kerja:**
-
-- WhatsApp-style UI dengan bubble messages dan timestamp1. Key expansion: Kunci user diperluas menjadi subkeys (18 P-array + 4 S-boxes)
-
-- Verification code (3 digit) + password sebagai kunci enkripsi2. Data encryption: Plaintext dienkripsi melalui 16 putaran Feistel
-
-3. Setiap putaran menggunakan XOR dan substitusi melalui S-boxes
-
-### 📁 File Encryption (RSA)
-
-- Enkripsi/dekripsi file apapun (dokumen, gambar, video)**Implementasi di Cryptore:**
-
-- RSA 2048-bit dengan OAEP padding- Digunakan sebagai lapisan enkripsi kedua (super encryption)
-
-- Output format: `.enc`- Mode operasi: CBC (Cipher Block Chaining) untuk keamanan tambahan
-
-- Kunci dihasilkan dari password chat yang dimasukkan user
-
-### 🖼️ Steganografi
-
-- **Sembunyikan** pesan dalam gambar (LSB method)**Kelebihan:**
-
-- **Ekstrak** pesan tersembunyi dari gambar- Sangat cepat dan efisien
-
-- Support: PNG, JPG, JPEG, BMP- Tidak ada kelemahan kriptografi yang ditemukan hingga saat ini
-
-- Public domain (free untuk digunakan)
-
-### ⭐ Review Terenkripsi
-
-- Submit review produk dengan super encryption**Kelemahan:**
-
-- Dekripsi dengan verification code + password yang sama- Ukuran blok 64-bit dianggap kecil untuk standar modern
-
-- Vulnerable terhadap birthday attack pada data besar
-
-### 🎨 Light/Dark Mode
-
-- Toggle tema dari menu profil### 3. **RSA (Rivest-Shamir-Adleman)**
-
-- Preferensi tersimpan otomatis**Lokasi Implementasi:** `modules/crypto_rsa_file.py`, `generate_keys.py`
-
-- Semua UI ter-theme (backgrounds, buttons, inputs)
-
 **Deskripsi:**
-
-### 🛍️ Katalog Produk- Algoritma kriptografi asimetris (public-key cryptography)
-
-- Grid display produk dengan gambar dan detail- Berbasis pada kesulitan faktorial bilangan prima besar
-
-- Tombol chat (normal/encrypted) terintegrasi- Ukuran kunci: 2048-bit (default dalam Cryptore)
-
-
-
-## 🛠️ Instalasi & Penggunaan**Cara Kerja:**
-
-1. **Key Generation:**
-
-### Metode 1: Executable (Recommended)   - Pilih dua bilangan prima besar p dan q
-
-1. Download `Cryptore.exe` dari [Releases](https://github.com/sebuahdelusi/Cryptore/releases)   - Hitung n = p × q (modulus)
-
-2. Jalankan langsung (tidak perlu instalasi)   - Hitung φ(n) = (p-1)(q-1)
-
-3. Register akun → Login → Gunakan fitur   - Pilih e (public exponent) yang coprime dengan φ(n)
-
-   - Hitung d (private exponent) dimana d × e ≡ 1 (mod φ(n))
-
-### Metode 2: Source Code
-
-```bash2. **Enkripsi:** C = M^e mod n (menggunakan public key)
-
-# Clone repository3. **Dekripsi:** M = C^d mod n (menggunakan private key)
-
-git clone https://github.com/sebuahdelusi/Cryptore.git
-
-cd Cryptore**Implementasi di Cryptore:**
-
-- Digunakan untuk enkripsi/dekripsi file
-
-# Install dependencies- Public key: `assets/keys/public_key.pem`
-
-pip install -r requirements.txt- Private key: `assets/keys/private_key.pem`
-
-- Padding: OAEP (Optimal Asymmetric Encryption Padding) untuk keamanan
-
-# Generate RSA keys (pertama kali)
-
-python generate_keys.py**Kelebihan:**
-
-- Tidak perlu pertukaran kunci rahasia
-
-# Jalankan aplikasi- Mendukung digital signature
-
-python main.py- Widely adopted dan well-tested
-
-```
-
-**Kelemahan:**
-
-### Persyaratan Sistem- Sangat lambat untuk data besar
-
-- **OS:** Windows 10/11 (64-bit)- Memerlukan manajemen kunci yang kompleks
-
-- **RAM:** 4 GB minimum
-
-- **Storage:** 500 MB### 4. **Steganografi LSB (Least Significant Bit)**
-
-- **Python:** 3.8+ (untuk development)**Lokasi Implementasi:** `modules/crypto_steganography.py`
-
-
-
-### Quick Start Guide**Deskripsi:**
-
-- Teknik menyembunyikan data dalam media digital (image)
-
-**1. Register & Login**- Menggunakan metode LSB replacement pada pixel image
-
-- Klik "Register" → Masukkan username & password- Tidak terlihat oleh mata manusia karena perubahan minimal
-
-- Login dengan kredensial atau aktifkan Windows Hello dari menu profil
+- Algoritma cipher klasik berbasis aljabar linear
+- Menggunakan matriks kunci untuk enkripsi/dekripsi
+- Merupakan cipher substitusi poligrafik yang beroperasi pada blok plaintext
 
 **Cara Kerja:**
+1. Plaintext dikonversi menjadi vektor numerik (A=0, B=1, ..., Z=25)
+2. Vektor dikalikan dengan matriks kunci menggunakan modulo 26
+3. Hasil perkalian dikonversi kembali menjadi ciphertext
 
-**2. Chat Terenkripsi**1. **Embedding (Menyembunyikan Pesan):**
+**Implementasi di Cryptore:**
+- Digunakan sebagai lapisan enkripsi pertama pada sistem chat terenkripsi
+- Matriks kunci dibangkitkan dari verification code yang dimasukkan user
+- Ukuran matriks: 3x3 untuk blok plaintext 3 karakter
 
-- Pilih produk → "💬🔒 Chat Terenkripsi"   - Konversi pesan menjadi binary string
+**Kelebihan:**
+- Resistant terhadap frequency analysis sederhana
+- Enkripsi blok meningkatkan keamanan
 
-- Pilih user → Ketik pesan → Klik "Kirim"   - Tambahkan delimiter "####END####" untuk menandai akhir pesan
+**Kelemahan:**
+- Vulnerable terhadap known-plaintext attack
+- Memerlukan matriks yang invertible
 
-- Masukkan Verification Code (3 digit) + Password   - Ganti bit terakhir (LSB) dari setiap byte pixel dengan bit pesan
+### 2. **Blowfish (Kriptografi Modern)**
+**Lokasi Implementasi:** `modules/crypto_super_encrypt.py`
 
-- **Penting:** Bagikan code via jalur terpisah (WhatsApp/telepon)   - Proses dilakukan pada channel RGB secara sequential
+**Deskripsi:**
+- Symmetric-key block cipher yang dikembangkan oleh Bruce Schneier
+- Ukuran blok: 64-bit
+- Panjang kunci: variable (32-448 bits)
+- Menggunakan struktur Feistel network dengan 16 putaran
 
-- Klik pesan 🔒 untuk dekripsi dengan code yang sama
+**Cara Kerja:**
+1. Key expansion: Kunci user diperluas menjadi subkeys (18 P-array + 4 S-boxes)
+2. Data encryption: Plaintext dienkripsi melalui 16 putaran Feistel
+3. Setiap putaran menggunakan XOR dan substitusi melalui S-boxes
+
+**Implementasi di Cryptore:**
+- Digunakan sebagai lapisan enkripsi kedua (super encryption)
+- Mode operasi: CBC (Cipher Block Chaining) untuk keamanan tambahan
+- Kunci dihasilkan dari password chat yang dimasukkan user
+
+**Kelebihan:**
+- Sangat cepat dan efisien
+- Tidak ada kelemahan kriptografi yang ditemukan hingga saat ini
+- Public domain (free untuk digunakan)
+
+**Kelemahan:**
+- Ukuran blok 64-bit dianggap kecil untuk standar modern
+- Vulnerable terhadap birthday attack pada data besar
+
+### 3. **RSA (Rivest-Shamir-Adleman)**
+**Lokasi Implementasi:** `modules/crypto_rsa_file.py`, `generate_keys.py`
+
+**Deskripsi:**
+- Algoritma kriptografi asimetris (public-key cryptography)
+- Berbasis pada kesulitan faktorial bilangan prima besar
+- Ukuran kunci: 2048-bit (default dalam Cryptore)
+
+**Cara Kerja:**
+1. **Key Generation:**
+   - Pilih dua bilangan prima besar p dan q
+   - Hitung n = p × q (modulus)
+   - Hitung φ(n) = (p-1)(q-1)
+   - Pilih e (public exponent) yang coprime dengan φ(n)
+   - Hitung d (private exponent) dimana d × e ≡ 1 (mod φ(n))
+
+2. **Enkripsi:** C = M^e mod n (menggunakan public key)
+3. **Dekripsi:** M = C^d mod n (menggunakan private key)
+
+**Implementasi di Cryptore:**
+- Digunakan untuk enkripsi/dekripsi file
+- Public key: `assets/keys/public_key.pem`
+- Private key: `assets/keys/private_key.pem`
+- Padding: OAEP (Optimal Asymmetric Encryption Padding) untuk keamanan
+
+**Kelebihan:**
+- Tidak perlu pertukaran kunci rahasia
+- Mendukung digital signature
+- Widely adopted dan well-tested
+
+**Kelemahan:**
+- Sangat lambat untuk data besar
+- Memerlukan manajemen kunci yang kompleks
+
+### 4. **Steganografi LSB (Least Significant Bit)**
+**Lokasi Implementasi:** `modules/crypto_steganography.py`
+
+**Deskripsi:**
+- Teknik menyembunyikan data dalam media digital (image)
+- Menggunakan metode LSB replacement pada pixel image
+- Tidak terlihat oleh mata manusia karena perubahan minimal
+
+**Cara Kerja:**
+1. **Embedding (Menyembunyikan Pesan):**
+   - Konversi pesan menjadi binary string
+   - Tambahkan delimiter "####END####" untuk menandai akhir pesan
+   - Ganti bit terakhir (LSB) dari setiap byte pixel dengan bit pesan
+   - Proses dilakukan pada channel RGB secara sequential
 
 2. **Extraction (Mengekstrak Pesan):**
+   - Ambil LSB dari setiap byte pixel
+   - Gabungkan bits menjadi string
+   - Baca hingga menemukan delimiter
+   - Konversi binary kembali menjadi text
 
-**3. Enkripsi File**   - Ambil LSB dari setiap byte pixel
+**Implementasi di Cryptore:**
+- Mendukung format: PNG, JPG, JPEG, BMP
+- Output format: PNG (untuk preservasi data)
+- Kapasitas: Tergantung ukuran gambar (1 byte pesan per 3 pixels RGB)
 
-- Menu "🔐 Enkripsi Dokumen"   - Gabungkan bits menjadi string
+**Kelebihan:**
+- Sederhana dan mudah diimplementasikan
+- Perubahan tidak terdeteksi visual
+- Dapat dikombinasikan dengan enkripsi
 
-- **Enkripsi:** Pilih file → "Amankan Dokumen" → Save sebagai `.enc`   - Baca hingga menemukan delimiter
-
-- **Dekripsi:** Pilih file `.enc` → "Pulihkan Dokumen" → Restore original   - Konversi binary kembali menjadi text
-
-
-
-**4. Steganografi****Implementasi di Cryptore:**
-
-- Menu "🖼️ Sembunyikan Metadata"- Mendukung format: PNG, JPG, JPEG, BMP
-
-- **Sembunyikan:** Pilih gambar → Ketik pesan → "Simpan Gambar" (PNG)- Output format: PNG (untuk preservasi data)
-
-- **Ekstrak:** Pilih gambar stego → "Ekstrak Metadata"- Kapasitas: Tergantung ukuran gambar (1 byte pesan per 3 pixels RGB)
-
-
-
-**5. Review Terenkripsi****Kelebihan:**
-
-- Menu "⭐ Kirim Ulasan" → Pilih produk → Tulis review- Sederhana dan mudah diimplementasikan
-
-- Masukkan Verification Code + Password → "Kirim Ulasan"- Perubahan tidak terdeteksi visual
-
-- Lihat review: "👁️ Lihat Ulasan" → Masukkan code yang sama- Dapat dikombinasikan dengan enkripsi
-
-
-
-## 🎯 Fitur Tersembunyi (Easter Eggs)**Kelemahan:**
-
+**Kelemahan:**
 - Vulnerable terhadap steganalysis
-
-Akses dengan **Shift + Click**:- Mudah rusak jika gambar di-compress atau di-resize
-
+- Mudah rusak jika gambar di-compress atau di-resize
 - Kapasitas terbatas
 
-| Lokasi | Shortcut | Fungsi |
+### 5. **Super Encryption (Hybrid Approach)**
+**Lokasi Implementasi:** `modules/crypto_super_encrypt.py`
 
-|--------|----------|--------|### 5. **Super Encryption (Hybrid Approach)**
-
-| Product Card → "Lihat Detail" | **Shift + Click** | Debug Crypto Panel (log enkripsi real-time) |**Lokasi Implementasi:** `modules/crypto_super_encrypt.py`
-
-| Detail Produk → "💬 Chat Penjual" | **Shift + Click** | Encrypted Chat Mode (end-to-end encryption) |
-
-| Halaman Steganografi → Label "Cryptore" | **Shift + Click** | Easter Egg Image (surprise!) |**Deskripsi:**
-
+**Deskripsi:**
 Cryptore mengimplementasikan "super encryption" dengan menggabungkan Hill Cipher dan Blowfish secara cascade untuk mencapai keamanan berlapis.
 
-**Tips:** Tahan Shift terlebih dahulu, baru klik. Tidak ada indikator visual.
-
 **Proses Enkripsi:**
-
-## 📁 Struktur Proyek```
-
+```
 Plaintext → Hill Cipher → Intermediate Ciphertext → Blowfish → Final Ciphertext
-
-``````
-
-Cryptore/
-
-├── main.py                      # Entry point & window manager**Proses Dekripsi:**
-
-├── generate_keys.py             # RSA key generator```
-
-├── build_exe.py                 # PyInstaller build scriptFinal Ciphertext → Blowfish → Intermediate Ciphertext → Hill Cipher → Plaintext
-
-├── requirements.txt             # Dependencies```
-
-│
-
-├── assets/**Keuntungan Hybrid:**
-
-│   ├── images/                  # Product images & UI assets- Defense in depth: Jika satu algoritma berhasil dipecahkan, lapisan lain masih melindungi
-
-│   └── keys/                    # RSA key pair (public_key.pem, private_key.pem)- Hill Cipher menyulitkan pattern analysis
-
-│- Blowfish memberikan enkripsi modern yang kuat
-
-├── data/                        # JSON storage- Kombinasi kunci independen (verification code + password)
-
-│   ├── users.json               # User database (hashed passwords)
-
-│   ├── chats.json               # Encrypted chat messages### 6. **Password Hashing dengan Salt**
-
-│   ├── reviews.json             # Encrypted product reviews**Lokasi Implementasi:** `modules/crypto_login.py`
-
-│   └── theme.json               # Theme preferences
-
-│**Deskripsi:**
-
-├── modules/                     # Crypto logic- Menggunakan SHA-256 untuk hashing password
-
-│   ├── crypto_login.py          # Authentication & hashing- Salt unik untuk setiap user mencegah rainbow table attacks
-
-│   ├── crypto_super_encrypt.py  # Hill Cipher + Blowfish- Password tidak pernah disimpan dalam plaintext
-
-│   ├── crypto_chat.py           # Chat encryption
-
-│   ├── crypto_rsa_file.py       # RSA file encryption**Cara Kerja:**
-
-│   ├── crypto_steganography.py  # LSB steganography1. User registrasi: Salt random dibangkitkan → Hash = SHA256(password + salt)
-
-│   ├── crypto_biometric.py      # Windows Hello integration2. Verifikasi login: Hash ulang password input dengan salt tersimpan → Bandingkan hash
-
-│   └── crypto_debug.py          # Debug utilities
-
-│### 7. **Windows Hello Biometric Authentication**
-
-└── ui/                          # User interface**Lokasi Implementasi:** `modules/crypto_biometric.py`
-
-    ├── ui_auth_pages.py         # Login & Register
-
-    ├── ui_main_pages.py         # Home & Products**Deskripsi:**
-
-    ├── ui_chat_page.py          # Chat interface- Integrasi dengan Windows Hello API
-
-    ├── ui_crypto_pages.py       # Crypto features- Mendukung: PIN, Fingerprint, Face Recognition
-
-    └── ui_components.py         # Reusable components- Menggunakan Windows Credential Manager untuk storage
-
 ```
 
+**Proses Dekripsi:**
+```
+Final Ciphertext → Blowfish → Intermediate Ciphertext → Hill Cipher → Plaintext
+```
+
+**Keuntungan Hybrid:**
+- Defense in depth: Jika satu algoritma berhasil dipecahkan, lapisan lain masih melindungi
+- Hill Cipher menyulitkan pattern analysis
+- Blowfish memberikan enkripsi modern yang kuat
+- Kombinasi kunci independen (verification code + password)
+
+### 6. **Password Hashing dengan Salt**
+**Lokasi Implementasi:** `modules/crypto_login.py`
+
+**Deskripsi:**
+- Menggunakan SHA-256 untuk hashing password
+- Salt unik untuk setiap user mencegah rainbow table attacks
+- Password tidak pernah disimpan dalam plaintext
+
+**Cara Kerja:**
+1. User registrasi: Salt random dibangkitkan → Hash = SHA256(password + salt)
+2. Verifikasi login: Hash ulang password input dengan salt tersimpan → Bandingkan hash
+
+### 7. **Windows Hello Biometric Authentication**
+**Lokasi Implementasi:** `modules/crypto_biometric.py`
+
+**Deskripsi:**
+- Integrasi dengan Windows Hello API
+- Mendukung: PIN, Fingerprint, Face Recognition
+- Menggunakan Windows Credential Manager untuk storage
+
 **Keamanan:**
-
-## 🔒 Keamanan- Biometric data tidak disimpan dalam aplikasi
-
+- Biometric data tidak disimpan dalam aplikasi
 - Managed oleh Windows Security
+- Per-user configuration dengan keyring
 
-### Best Practices- Per-user configuration dengan keyring
+## 🚀 Fitur Lengkap
 
-✅ **Passwords:** Minimal 12 karakter, kombinasi huruf/angka/simbol  
+### 1. 🔑 Sistem Autentikasi Aman
+**File:** `ui/ui_auth_pages.py`, `modules/crypto_login.py`
 
-✅ **Private Key:** Backup ke storage offline, jangan commit ke Git  ## 🚀 Fitur Lengkap
-
-✅ **Verification Code:** Komunikasikan via jalur terpisah (jangan di chat)  
-
-✅ **File Backup:** Simpan original sebelum enkripsi  ### 1. 🔑 Sistem Autentikasi Aman
-
-✅ **Windows Hello:** Aktifkan untuk two-factor authentication  **File:** `ui/ui_auth_pages.py`, `modules/crypto_login.py`
-
-
-
-### Limitasi**Fitur:**
-
-⚠️ **Local Storage:** Data tersimpan lokal (encrypt hard drive dengan BitLocker)  - **Login Tradisional:**
-
-⚠️ **No Key Rotation:** RSA keys static (generate ulang manual secara berkala)    - Username dan password
-
-⚠️ **No Remote Wipe:** Tidak ada remote delete jika device hilang    - Password hashing dengan SHA-256 + salt
-
+**Fitur:**
+- **Login Tradisional:**
+  - Username dan password
+  - Password hashing dengan SHA-256 + salt
   - Validasi real-time
-
-### PENTING: Private Key  
-
-❌ JANGAN: Commit ke Git, share via email/cloud, simpan di lokasi tidak aman  - **Windows Hello Login:**
-
-✅ WAJIB: Backup offline, simpan terenkripsi, generate ulang jika exposed    - Autentikasi biometrik (PIN/Fingerprint/Face)
-
+  
+- **Windows Hello Login:**
+  - Autentikasi biometrik (PIN/Fingerprint/Face)
   - Per-user configuration
-
-## 🔨 Build Executable  - Secure credential storage dengan keyring
-
+  - Secure credential storage dengan keyring
   - Visual feedback saat menunggu autentikasi
 
-```bash
-
-# Install PyInstaller- **Registrasi User:**
-
-pip install pyinstaller  - Validasi username unik
-
+- **Registrasi User:**
+  - Validasi username unik
   - Password strength requirement
+  - Automatic salt generation
+  - Secure storage dalam `data/users.json`
 
-# Build  - Automatic salt generation
-
-python build_exe.py  - Secure storage dalam `data/users.json`
-
-
-
-# Output: dist/Cryptore.exe (~35 MB)**Cara Menggunakan:**
-
-```1. Pertama kali: Klik "Register" untuk membuat akun baru
-
+**Cara Menggunakan:**
+1. Pertama kali: Klik "Register" untuk membuat akun baru
 2. Login dengan username dan password
-
-**Distribusi:** Bundle `Cryptore.exe` + folder `assets/` (HANYA public_key.pem, BUKAN private_key.pem!)3. Opsional: Aktifkan Windows Hello dari menu profil setelah login
-
+3. Opsional: Aktifkan Windows Hello dari menu profil setelah login
 4. Selanjutnya: Gunakan tombol "🔐 Windows Hello" untuk login cepat
 
-## 📄 Lisensi & Disclaimer
-
 ### 2. 🎨 Light/Dark Mode Theme
+**File:** `main.py`, `data/theme.json`
 
-**Academic Use Only** - Project untuk keperluan akademik mata kuliah Kriptografi.**File:** `main.py`, `data/theme.json`
-
-
-
-⚠️ **Disclaimer:** Dibuat untuk tujuan edukasi. Tidak untuk production use tanpa security audit. Penulis tidak bertanggung jawab atas kerugian data atau security breach.**Fitur:**
-
+**Fitur:**
 - Toggle theme dari menu profil
-
-🎓 **Academic Integrity:** Hasil karya original untuk tugas kuliah. Plagiarisme melanggar kode etik akademik.- Tema tersimpan otomatis (persistent)
-
+- Tema tersimpan otomatis (persistent)
 - Semua elemen UI ter-theme:
-
-## 📞 Contact  - Backgrounds (header, content, chat, products)
-
+  - Backgrounds (header, content, chat, products)
   - Buttons (normal, hover, active states)
-
-- **Repository:** [github.com/sebuahdelusi/Cryptore](https://github.com/sebuahdelusi/Cryptore)  - Input fields (entries, text boxes)
-
-- **Issues:** [Report bugs](https://github.com/sebuahdelusi/Cryptore/issues)  - Chat bubbles (own messages, received messages)
-
+  - Input fields (entries, text boxes)
+  - Chat bubbles (own messages, received messages)
   - Scrollbars dan borders
 
----
-
 **Warna:**
-
-*Version: 2.0 | Last Updated: 2024*- **Light Mode:** 
-
+- **Light Mode:** 
   - Primary: #0078D4 (Microsoft Blue)
   - Secondary: #F3F3F3 (Light Gray)
   - Text: #222222 (Dark Gray)
@@ -1285,7 +1021,16 @@ Project ini dibuat untuk keperluan akademik (Tugas Kriptografi, Semester 5).
 
 **Academic Use Only** - Tidak untuk produksi commercial tanpa review security lengkap.
 
-##  Acknowledgments
+## 👥 Tim Pengembang
+
+**Universitas Pembangunan Nasional "Veteran" Yogyakarta (UPNYK)**
+
+- **Gorbi Ello Pasaribu** - 123230083 - IF-H
+- **Athallah Joyoningrat** - 123230230 - IF-H
+
+**Mata Kuliah:** Kriptografi - Semester 5
+
+## 🙏 Acknowledgments
 
 - Terima kasih kepada dosen pengampu mata kuliah Kriptografi
 - Python Cryptography Community
